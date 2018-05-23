@@ -1,2 +1,2 @@
-# haptic-simon-evothings
-Simon Says game for the haptic shoes controlled with the Evothings viewer
+## Known Issues
+If connection takes a long time, clear Evothings data/cache in the android app manager.
