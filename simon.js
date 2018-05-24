@@ -21,6 +21,14 @@ var endTimeH = new Date();
 var startTimeT = new Date();
 var endTimeT = new Date();
 
+simon.hapticSimonStart = function() {
+    $('#title').hide();
+    $('#selectorView').hide();
+    $('#hapticSimonView').show();
+    $('#shoeButtons').hide();
+    $('.experimentButton').hide();
+}
+
 simon.pressed = function(left, right, heel, toe) {
     winner = 0;
     winnerVal = 0;
@@ -102,6 +110,7 @@ simon.pressed = function(left, right, heel, toe) {
 $(document).ready(function() {
     var audio = $("#sound");
 
+    // Animate and vibrate button
     simon.animate = function(divid) {
 
 
@@ -148,7 +157,7 @@ $(document).ready(function() {
 
 
 
-    // Generating Simon sequence
+    // Generate Simon sequence
     function makeid() {
         var text = "";
         var possible = "abcd";
@@ -161,7 +170,7 @@ $(document).ready(function() {
 
 
 
-        // Animating Sequence
+        // Animate Sequence
         function myLoop() {
             setTimeout(function() {
                 simon.animate(settings.sequence[settings.playNumber]);
@@ -184,11 +193,22 @@ $(document).ready(function() {
 
      simon.listen = function() {
 
-        // Which button is clicked
+        // Button is pressed
         if (simon.simonId == "a" || simon.simonId == "b"
             || simon.simonId == "c" || simon.simonId == "d") {
 
-            if (simon.simonId == settings.sequence[settings.clicked]) {
+            // FAIL
+            if ($("#fail").is(':visible')) {
+                $("#fail").hide();
+                settings.sequence = [];
+                settings.round = 0;
+                settings.playNumber = 0,
+                    settings.speed = 1000;
+                settings.clicked = 0;
+                $("#start").trigger("click");
+            }
+
+            else if (simon.simonId == settings.sequence[settings.clicked]) {
 
                 // End of repeated sequence
                 if (settings.clicked === settings.sequence.length - 1) {
@@ -225,31 +245,15 @@ $(document).ready(function() {
 
     //BEGIN GAME
 
-    $("#a, #b, #c, #d").on("click", function() {
-        simon.animate(this.id)
-    });
     $("#start").on("click", function() {
+    //simon.started = function() {
         $("#start").hide();
         $("#simon, #count").css("filter", "blur(0px)");
         $("#simon, #count").css("-webkit-filter", "blur(0px)");
         settings.round++;
         makeid(); // make id and play it
         $("#count").html(settings.round);
-        //playit();
 
-
-
-
-    });
-
-    $("#fail").on("click", function() {
-        $("#fail").hide();
-        settings.sequence = [];
-        settings.round = 0;
-        settings.playNumber = 0,
-        settings.speed = 1000;
-        settings.clicked = 0;
-        $("#start").trigger("click");
     });
 
 }); //document ready

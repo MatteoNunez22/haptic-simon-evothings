@@ -168,8 +168,6 @@ app.streamSensorData = true;
 app.gauges = false;
 app.pacman = false;
 app.pacmanStarted = false;
-app.simon = false;
-app.simonStarted = false;
 app.scanOptionsOpen = true;
 
 app.sensorValues = {};
@@ -2250,14 +2248,6 @@ app.hapticZoomStart = function() {
 	numberOfAlarms = 0;
 	correctSide = 0;
 	correctLevel = 0;
-}
-
-app.hapticSimonStart = function() {
-	$('#title').hide();
-	$('#selectorView').hide();
-	$('#hapticSimonView').show();
-	$('#shoeButtons').hide();
-	$('.experimentButton').hide();
 }
 
 app.zoomTester = function() {
