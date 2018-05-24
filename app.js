@@ -2652,29 +2652,29 @@ app.pressed = function(left, right, heel, toe) {
         case 1:
             endTimeL = new Date();
             if ((endTimeL-startTimeL) >= 300) {
-            app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
+            simon.animate("c");
             startTimeL = new Date();
             }
             break;
         case 2:
             endTimeR = new Date();
             if ((endTimeR-startTimeR) >= 300) {
-            app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+            simon.animate("b");
             startTimeR = new Date();
     		}
             break;
         case 3:
             endTimeH = new Date();
             if ((endTimeH-startTimeH) >= 300) {
-            app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
-    		startTimeH = new Date();
+            simon.animate("d");
+            startTimeH = new Date();
 			}
             break;
         case 4:
             endTimeT = new Date();
             if ((endTimeT-startTimeT) >= 300) {
-            app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
-			startTimeT = new Date();
+            simon.animate("a");
+            startTimeT = new Date();
 			}
             break;
 

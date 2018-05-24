@@ -7,12 +7,12 @@ var settings = {
     speed: 1000,
     clicked: 0
 
-}
+};
 
 $(document).ready(function() {
     var audio = $("#sound");
 
-    function animate(divid) {
+    simon.animate = function(divid) {
 
 
         // Increase round speed.
@@ -58,7 +58,7 @@ $(document).ready(function() {
 
 
 
-
+    // Generating Simon sequence
     function makeid() {
         var text = "";
         var possible = "abcd";
@@ -71,10 +71,10 @@ $(document).ready(function() {
 
 
 
-
+        // Animating Sequence
         function myLoop() {
             setTimeout(function() {
-                animate(settings.sequence[settings.playNumber]);
+                simon.animate(settings.sequence[settings.playNumber]);
                 settings.playNumber++;
                 if (settings.playNumber < settings.sequence.length) {
                     myLoop();
@@ -134,7 +134,7 @@ $(document).ready(function() {
     //BEGIN GAME
 
     $("#a, #b, #c, #d").on("click", function() {
-        animate(this.id)
+        simon.animate(this.id)
     });
     $("#start").on("click", function() {
         $("#start").hide();
