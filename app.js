@@ -2617,8 +2617,14 @@ app.userCommand = function() {
     //app.sendMessage(" p " + 1 + "t" + "\r");
 }
 
-var startTime = new Date();
-var endTime = new Date();
+var startTimeL = new Date();
+var endTimeL = new Date();
+var startTimeR = new Date();
+var endTimeR = new Date();
+var startTimeH = new Date();
+var endTimeH = new Date();
+var startTimeT = new Date();
+var endTimeT = new Date();
 
 app.pressed = function(left, right, heel, toe) {
     winner = 0;
@@ -2644,20 +2650,32 @@ app.pressed = function(left, right, heel, toe) {
     }
     switch(winner) {
         case 1:
-            endTime = new Date();
-            if ((endTime-startTime) >= 300) {
+            endTimeL = new Date();
+            if ((endTimeL-startTimeL) >= 300) {
             app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
-            startTime = new Date();
+            startTimeL = new Date();
             }
             break;
         case 2:
+            endTimeR = new Date();
+            if ((endTimeR-startTimeR) >= 300) {
             app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+            startTimeR = new Date();
+    		}
             break;
         case 3:
+            endTimeH = new Date();
+            if ((endTimeH-startTimeH) >= 300) {
             app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
+    		startTimeH = new Date();
+			}
             break;
         case 4:
+            endTimeT = new Date();
+            if ((endTimeT-startTimeT) >= 300) {
             app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+			startTimeT = new Date();
+			}
             break;
 
         default:
