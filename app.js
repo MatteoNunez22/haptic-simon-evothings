@@ -1215,7 +1215,7 @@ app.receivedMessageLeft = function(data) {
             }
 
             if ($('#hapticSimonView').is(':visible')) {
-                app.pressed(leftVal, rightVal, heelVal, toeVal);
+                simon.pressed(leftVal, rightVal, heelVal, toeVal);
             }
 
 			if (app.gauges) {
@@ -2616,70 +2616,3 @@ app.userCommand = function() {
     app.sendMessage(" " + command.trim() + "\r");
     //app.sendMessage(" p " + 1 + "t" + "\r");
 }
-
-var startTimeL = new Date();
-var endTimeL = new Date();
-var startTimeR = new Date();
-var endTimeR = new Date();
-var startTimeH = new Date();
-var endTimeH = new Date();
-var startTimeT = new Date();
-var endTimeT = new Date();
-
-app.pressed = function(left, right, heel, toe) {
-    winner = 0;
-    winnerVal = 0;
-    if (left > winnerVal){
-        winner = 1;
-        winnerVal = left;
-    }
-    if (right > winnerVal){
-        winner = 2;
-        winnerVal = right;
-    }
-    if (heel > winnerVal){
-        winner = 3;
-        winnerVal = heel;
-    }
-    if (toe > winnerVal){
-        winner = 4;
-        winnerVal = toe;
-    }
-    if (winnerVal < 950){
-        return;
-    }
-    switch(winner) {
-        case 1:
-            endTimeL = new Date();
-            if ((endTimeL-startTimeL) >= 300) {
-            simon.animate("c");
-            startTimeL = new Date();
-            }
-            break;
-        case 2:
-            endTimeR = new Date();
-            if ((endTimeR-startTimeR) >= 300) {
-            simon.animate("b");
-            startTimeR = new Date();
-    		}
-            break;
-        case 3:
-            endTimeH = new Date();
-            if ((endTimeH-startTimeH) >= 300) {
-            simon.animate("d");
-            startTimeH = new Date();
-			}
-            break;
-        case 4:
-            endTimeT = new Date();
-            if ((endTimeT-startTimeT) >= 300) {
-            simon.animate("a");
-            startTimeT = new Date();
-			}
-            break;
-
-        default:
-            break;
-
-    }
-};

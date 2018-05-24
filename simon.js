@@ -1,4 +1,7 @@
-var simon = {};
+var simon = {
+    simonId: ""
+
+};
 
 var settings = {
     sequence: [],
@@ -7,6 +10,93 @@ var settings = {
     speed: 1000,
     clicked: 0
 
+};
+
+var startTimeL = new Date();
+var endTimeL = new Date();
+var startTimeR = new Date();
+var endTimeR = new Date();
+var startTimeH = new Date();
+var endTimeH = new Date();
+var startTimeT = new Date();
+var endTimeT = new Date();
+
+simon.pressed = function(left, right, heel, toe) {
+    winner = 0;
+    winnerVal = 0;
+    if (left > winnerVal){
+        winner = 1;
+        winnerVal = left;
+    }
+    if (right > winnerVal){
+        winner = 2;
+        winnerVal = right;
+    }
+    if (heel > winnerVal){
+        winner = 3;
+        winnerVal = heel;
+    }
+    if (toe > winnerVal){
+        winner = 4;
+        winnerVal = toe;
+    }
+    if (winnerVal < 950){
+        return;
+    }
+    switch(winner) {
+        case 1:
+            endTimeL = new Date();
+            if ((endTimeL-startTimeL) >= 400) {
+                simon.simonId = "c";
+                setTimeout(function(){
+                    simon.simonId = "";
+                },300);
+                simon.listen();
+                simon.animate("c");
+                startTimeL = new Date();
+            }
+            break;
+        case 2:
+            endTimeR = new Date();
+            if ((endTimeR-startTimeR) >= 400) {
+                simon.simonId = "b";
+                setTimeout(function(){
+                    simon.simonId = "";
+                },300);
+                simon.animate("b");
+                simon.listen();
+                startTimeR = new Date();
+            }
+            break;
+        case 3:
+            endTimeH = new Date();
+            if ((endTimeH-startTimeH) >= 400) {
+                simon.simonId = "d";
+                setTimeout(function(){
+                    simon.simonId = "";
+                },300);
+                simon.animate("d");
+                simon.listen();
+                startTimeH = new Date();
+            }
+            break;
+        case 4:
+            endTimeT = new Date();
+            if ((endTimeT-startTimeT) >= 400) {
+                simon.simonId = "a";
+                setTimeout(function(){
+                    simon.simonId = "";
+                },300);
+                simon.animate("a");
+                simon.listen();
+                startTimeT = new Date();
+            }
+            break;
+
+        default:
+            break;
+
+    }
 };
 
 $(document).ready(function() {
@@ -80,7 +170,7 @@ $(document).ready(function() {
                     myLoop();
                 } else {
                     settings.playNumber = 0;
-                    listen();
+                    //listen();
                 }
             }, settings.speed)
         }
@@ -92,15 +182,17 @@ $(document).ready(function() {
 
     // LISTEN
 
-     function listen() {
+     simon.listen = function() {
 
-        $("#a, #b, #c, #d").on("mousedown", function() {
+        // Which button is clicked
+        if (simon.simonId == "a" || simon.simonId == "b"
+            || simon.simonId == "c" || simon.simonId == "d") {
 
+            if (simon.simonId == settings.sequence[settings.clicked]) {
 
-            if (this.id == settings.sequence[settings.clicked]) {
-
+                // End of repeated sequence
                 if (settings.clicked === settings.sequence.length - 1) {
-                    $("#a, #b, #c, #d").off("mousedown");
+                    //$("#a, #b, #c, #d").off("mousedown");
                     settings.clicked = 0;
                     $("#start").trigger("click");
                 } else {
@@ -125,7 +217,7 @@ $(document).ready(function() {
 
             }
 
-        });
+        }
 
     }
 
