@@ -1055,7 +1055,9 @@ app.receivedMessageRight = function(data) {
 			var rightPercent= parseInt(convertRange(rightVal, r1, r2));
 			var toePercent= parseInt(convertRange(toeVal, r1, r2));
 
-            if(!app.connectionFaking)changeDir(leftPercent, rightPercent, heelPercent, toePercent);
+            if(!app.connectionFaking) {
+                changeDir(leftPercent, rightPercent, heelPercent, toePercent);
+            }
 
 		}
 		else if (message.charAt(0) === 'C') {
@@ -1212,8 +1214,8 @@ app.receivedMessageLeft = function(data) {
             	app.zoomDir(leftVal, rightVal, heelVal, toeVal);
             }
 
-            if ($('#simonView').is(':visible')) {
-            	simon.force(leftVal, rightVal, heelVal, toeVal);
+            if ($('#hapticSimonView').is(':visible')) {
+                app.pressed(leftVal, rightVal, heelVal, toeVal);
             }
 
 			if (app.gauges) {
@@ -1231,7 +1233,10 @@ app.receivedMessageLeft = function(data) {
 			var rightPercent= parseInt(convertRange(rightVal, r1, r2));
 			var toePercent= parseInt(convertRange(toeVal, r1, r2));
 
-            if(!app.connectionFaking)changeDir(leftPercent, rightPercent, heelPercent, toePercent);
+            if(!app.connectionFaking) {
+                changeDir(leftPercent, rightPercent, heelPercent, toePercent);
+            }
+
 		}
 		else if (message.charAt(0) === 'C') {
 			app.sensorValues.tOrientation = time;
@@ -1259,7 +1264,7 @@ app.receivedMessageLeft = function(data) {
 				document.getElementById("heightDataLeft").innerHTML = height;
 				document.getElementById("yawDataLeft").innerHTML = yaw;
 				document.getElementById("pitchDataLeft").innerHTML = pitch;
-				document.getElementById("rollDataLeft").innerHTML = roll
+				document.getElementById("rollDataLeft").innerHTML = roll;
 				setAttitudeL(roll - rollOffsetLeft, pitch - pitchOffsetLeft);
 				setHeadingL(yaw - yawOffsetLeft);
 				setAltitudeL((height - heightOffsetLeft)*(255-heightOffsetLeft)/50);
@@ -1564,7 +1569,7 @@ app.notifMsg = function (message) {
 		console.log('Popup message: '+ message);
 		navigator.notification.alert(message, function() {});
 	}
-}
+};
 
 var lastErrorTime = 0;
 app.disconnect = function(errorMessage) {
@@ -2125,6 +2130,7 @@ app.goStart = function() {
 	$('#shoeView').hide();
 	$('#selectorView').hide();
 	$('#startView').hide();
+    $('#shoeButtons').hide();
 }
 
 /**
@@ -2604,3 +2610,58 @@ app.zoomCal = function() {
 	zeroOutFSR = true;
 }
 
+app.userCommand = function() {
+    let command = document.getElementById('userCommand').value;
+    console.log(command);
+    app.sendMessage(" " + command.trim() + "\r");
+    //app.sendMessage(" p " + 1 + "t" + "\r");
+}
+
+var startTime = new Date();
+var endTime = new Date();
+
+app.pressed = function(left, right, heel, toe) {
+    winner = 0;
+    winnerVal = 0;
+    if (left > winnerVal){
+        winner = 1;
+        winnerVal = left;
+    }
+    if (right > winnerVal){
+        winner = 2;
+        winnerVal = right;
+    }
+    if (heel > winnerVal){
+        winner = 3;
+        winnerVal = heel;
+    }
+    if (toe > winnerVal){
+        winner = 4;
+        winnerVal = toe;
+    }
+    if (winnerVal < 950){
+        return;
+    }
+    switch(winner) {
+        case 1:
+            endTime = new Date();
+            if ((endTime-startTime) >= 300) {
+            app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
+            startTime = new Date();
+            }
+            break;
+        case 2:
+            app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+            break;
+        case 3:
+            app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
+            break;
+        case 4:
+            app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+            break;
+
+        default:
+            break;
+
+    }
+};

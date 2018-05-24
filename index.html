@@ -238,6 +238,9 @@
 			</div>
 		<button class="jetblack wide" onclick="app.hapticZoomStart()">Haptic Zoom</button>
 		<button class="stone wide" onclick="app.hapticSimonStart()">Haptic Simon</button>
+
+        <input id="userCommand" type="text" value="Enter command here">
+        <button class="stone wide" onclick="app.userCommand()">Send Command</button>
 	</div>
 
 
@@ -438,6 +441,7 @@
         <audio controls id="sound">
             <source id="tune" src="http://www.chiptape.com/chiptape/sounds/medium/PlaceTrap.wav" type="audio/wav">
         </audio>
+
     </div>
 
 <!-- Individual view for each patterned used for training -->
