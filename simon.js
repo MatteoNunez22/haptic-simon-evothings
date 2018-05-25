@@ -1,6 +1,6 @@
 var simon = {
-    simonId: ""
-
+    simonId: "",
+    delay: 500
 };
 
 var settings = {
@@ -27,7 +27,7 @@ simon.hapticSimonStart = function() {
     $('#hapticSimonView').show();
     $('#shoeButtons').hide();
     $('.experimentButton').hide();
-}
+};
 
 simon.pressed = function(left, right, heel, toe) {
     winner = 0;
@@ -54,7 +54,7 @@ simon.pressed = function(left, right, heel, toe) {
     switch(winner) {
         case 1:
             endTimeL = new Date();
-            if ((endTimeL-startTimeL) >= 400) {
+            if ((endTimeL-startTimeL) >= simon.delay) {
                 simon.simonId = "c";
                 setTimeout(function(){
                     simon.simonId = "";
@@ -66,7 +66,7 @@ simon.pressed = function(left, right, heel, toe) {
             break;
         case 2:
             endTimeR = new Date();
-            if ((endTimeR-startTimeR) >= 400) {
+            if ((endTimeR-startTimeR) >= simon.delay) {
                 simon.simonId = "b";
                 setTimeout(function(){
                     simon.simonId = "";
@@ -78,7 +78,7 @@ simon.pressed = function(left, right, heel, toe) {
             break;
         case 3:
             endTimeH = new Date();
-            if ((endTimeH-startTimeH) >= 400) {
+            if ((endTimeH-startTimeH) >= simon.delay) {
                 simon.simonId = "d";
                 setTimeout(function(){
                     simon.simonId = "";
@@ -90,7 +90,7 @@ simon.pressed = function(left, right, heel, toe) {
             break;
         case 4:
             endTimeT = new Date();
-            if ((endTimeT-startTimeT) >= 400) {
+            if ((endTimeT-startTimeT) >= simon.delay) {
                 simon.simonId = "a";
                 setTimeout(function(){
                     simon.simonId = "";
@@ -199,13 +199,12 @@ $(document).ready(function() {
 
             // FAIL
             if ($("#fail").is(':visible')) {
-                $("#fail").hide();
-                settings.sequence = [];
-                settings.round = 0;
-                settings.playNumber = 0,
-                    settings.speed = 1000;
-                settings.clicked = 0;
-                $("#start").trigger("click");
+                simon.fail();
+            }
+
+            else if ($("#start").is(':visible')) {
+                simon.startNew();
+
             }
 
             else if (simon.simonId == settings.sequence[settings.clicked]) {
@@ -214,7 +213,8 @@ $(document).ready(function() {
                 if (settings.clicked === settings.sequence.length - 1) {
                     //$("#a, #b, #c, #d").off("mousedown");
                     settings.clicked = 0;
-                    $("#start").trigger("click");
+                    //$("#start").trigger("click");
+                    simon.startNew();
                 } else {
                     console.log("Right!");
                     settings.clicked++;
@@ -244,9 +244,7 @@ $(document).ready(function() {
 
 
     //BEGIN GAME
-
-    $("#start").on("click", function() {
-    //simon.started = function() {
+    simon.startNew = function() {
         $("#start").hide();
         $("#simon, #count").css("filter", "blur(0px)");
         $("#simon, #count").css("-webkit-filter", "blur(0px)");
@@ -254,6 +252,19 @@ $(document).ready(function() {
         makeid(); // make id and play it
         $("#count").html(settings.round);
 
-    });
+    }
+
+    // FAIL
+    simon.fail = function() {
+        $("#fail").hide();
+        settings.sequence = [];
+        settings.round = 0;
+        settings.playNumber = 0,
+            settings.speed = 1000;
+        settings.clicked = 0;
+        //$("#start").trigger("click");
+        simon.startNew();
+
+    };
 
 }); //document ready
