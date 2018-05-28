@@ -11,14 +11,14 @@ audio {
 
 #start {
     display:block;
-    width:400px;
-    height:350px;
+    width:220px;
+    height:0px;
     text-align:center;
     position:relative;
     margin:0 auto;
-    font-size:105px;
+    font-size:55px;
     color:#ffffff;
-    padding-top:95px;
+    padding-top:105px;
 
 
 
@@ -29,14 +29,14 @@ audio {
 
 #fail {
     display:block;
-    width:400px;
-    height:350px;
+    width:200px;
+    height:150px;
     text-align:center;
     position:relative;
     margin:0 auto;
-    font-size:105px;
+    font-size:55px;
     color:#ffffff;
-    padding-top:95px;
+    padding-top:55px;
     display:none;
 
 
@@ -63,16 +63,16 @@ audio {
 }
 
 #container {
-    width:350px;
+    width:400px;
     position:relative;
     margin:0 auto;
 }
 
 #count {
     position:absolute;
-    top:200px;
-    left:183px;
-    font-size:40px;
+    top:155px;
+    left:119px;
+    font-size:20px;
     color:#FFFFFF;
     width:80px;
     text-align:center;
@@ -88,10 +88,10 @@ audio {
     width: 0;
     height: 0;
     line-height: 0;
-    border: 224.99999999999997px solid #222222;
-    border-radius: 224.99999999999997px;
+    border: 158px solid #222222;
+    border-radius: 180px;
     left: 0px;
-    top: 0px;
+    top: 10px;
 }
 
 /*#1aff00*/
@@ -101,13 +101,14 @@ audio {
     width: 0;
     height: 0;
     line-height: 0;
-    border: 182.14285714285714px solid;
+    border: 130px solid;
     border-color:#0b7000;
     border-bottom: none;
     border-right: none;
-    border-top-left-radius: 182.14285714285714px;
-    left: 32.14285714285714px;
-    top: 32.14285714285714px;
+    border-top-left-radius: 195px;
+    left: 94px;
+    top: 8px;
+    transform: rotate(45deg);
 }
 /*#ff0b00*/
 #simon #b {
@@ -116,13 +117,14 @@ audio {
     width: 0;
     height: 0;
     line-height: 0;
-    border: 182.14285714285714px solid;
+    border: 130px solid;
     border-color: #c30800;
     border-bottom: none;
     border-left: none;
-    border-top-right-radius: 182.14285714285714px;
-    left: 235.7142857142857px;
-    top: 32.14285714285714px;
+    border-top-right-radius: 195px;
+    left: 188px;
+    top: 102px;
+    transform: rotate(45deg);
 }
 /*#ffec00*/
 #simon #c {
@@ -131,13 +133,14 @@ audio {
     width: 0;
     height: 0;
     line-height: 0;
-    border: 182.14285714285714px solid;
+    border: 130px solid;
     border-color:#c3b400;
     border-top: none;
     border-right: none;
-    border-bottom-left-radius: 182.14285714285714px;
-    left: 32.14285714285714px;
-    top: 235.7142857142857px;
+    border-bottom-left-radius: 195px;
+    left: 0px;
+    top: 102px;
+    transform: rotate(45deg);
 }
 /*#29abd0*/
 #simon #d {
@@ -146,13 +149,14 @@ audio {
     width: 0;
     height: 0;
     line-height: 0;
-    border: 182.14285714285714px solid;
+    border: 130px solid;
     border-color:#196d85;
     border-top: none;
     border-left: none;
-    border-bottom-right-radius: 182.14285714285714px;
-    left: 235.7142857142857px;
-    top: 235.7142857142857px;
+    border-bottom-right-radius: 195px;
+    left: 94px;
+    top: 196px;
+    transform: rotate(45deg);
 }
 #simon #sixth {
     position: absolute;
@@ -160,8 +164,8 @@ audio {
     width: 0;
     height: 0;
     line-height: 0;
-    border: 53.57142857142857px solid #222222;
-    border-radius: 53.57142857142857px;
-    left: 171.42857142857142px;
-    top: 171.42857142857142px;
+    border: 28.3px solid #222222;
+    border-radius: 53.6px;
+    left: 130px;
+    top: 138px;
 }

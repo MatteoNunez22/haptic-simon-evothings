@@ -226,7 +226,7 @@ $(document).ready(function() {
                 console.log("WRONG");
                 $("#fail").show();
                 $("#fail").addClass("bigEntrance");
-                $("#tune").attr("src", "wav/wrong.wav");
+                $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
                 audio[0].pause();
                 audio[0].load();
                 audio[0].play();
