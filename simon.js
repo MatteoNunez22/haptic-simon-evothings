@@ -1,6 +1,6 @@
 var simon = {
     simonId: "",
-    delay: 500,
+    delay: 700,
     yourTurn: false,
     turn: "Simon's Turn"
 };
@@ -10,6 +10,10 @@ var settings = {
     round: 0,
     playNumber: 0,
     speed: 1000,
+    intensity: 255,
+    duration: 400,
+    durationStart: 200,
+    durationFail: 200,
     clicked: 0
 
 };
@@ -56,7 +60,20 @@ simon.pressed = function(left, right, heel, toe) {
         winner = 4;
         winnerVal = toe;
     }
-    if (winnerVal < 1110){
+    // Left
+    if (winner == 1 && winnerVal < 1150){
+        return;
+    }
+    // Right
+    if (winner == 2 && winnerVal < 1200){
+        return;
+    }
+    // Heel
+    if (winner == 3 && winnerVal < 1200){
+        return;
+    }
+    // Toe
+    if (winner == 4 && winnerVal < 1150){
         return;
     }
     switch(winner) {
@@ -71,10 +88,10 @@ simon.pressed = function(left, right, heel, toe) {
                     simon.animate("c");
                 }
                 else {
-                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
                 }
                 simon.listen();
                 startTimeL = new Date();
@@ -91,10 +108,10 @@ simon.pressed = function(left, right, heel, toe) {
                     simon.animate("b");
                 }
                 else {
-                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
                 }
                 simon.listen();
                 startTimeR = new Date();
@@ -111,10 +128,10 @@ simon.pressed = function(left, right, heel, toe) {
                     simon.animate("d");
                 }
                 else {
-                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
                 }
                 simon.listen();
                 startTimeH = new Date();
@@ -131,10 +148,10 @@ simon.pressed = function(left, right, heel, toe) {
                     simon.animate("a");
                 }
                 else {
-                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
-                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
+                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
                 }
                 simon.listen();
                 startTimeT = new Date();
@@ -162,28 +179,28 @@ $(document).ready(function() {
         if (divid == "a") {
             $("#a").css("border-color", "#1aff00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334537_4959932-lq.mp3");
-            app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
+            app.sendMessage(" t " + "t " + settings.intensity + " " + settings.duration + "\r");
             setTimeout(function() {
                 $("#a").css("border-color", "#0b7000");
             }, 200);
         } else if (divid == "b") {
             $("#b").css("border-color", "#ff0b00");
             $("#tune").attr("src", "http://freesound.org/data/previews/334/334540_4959932-lq.mp3");
-            app.sendMessage(" t " + "r " + 255 + " " + 300 + "\r");
+            app.sendMessage(" t " + "r " + settings.intensity + " " + settings.duration + "\r");
             setTimeout(function() {
                 $("#b").css("border-color", "#c30800");
             }, 200);
         } else if (divid == "c") {
             $("#c").css("border-color", "#ffec00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334542_4959932-lq.mp3");
-            app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+            app.sendMessage(" t " + "l " + settings.intensity + " " + settings.duration + "\r");
             setTimeout(function() {
                 $("#c").css("border-color", "#c3b400");
             }, 200);
         } else if (divid == "d") {
             $("#d").css("border-color", "#29abd0");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334538_4959932-lq.mp3");
-            app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
+            app.sendMessage(" t " + "h " + settings.intensity + " " + settings.duration + "\r");
             setTimeout(function() {
                 $("#d").css("border-color", "#196d85");
             }, 200);
@@ -267,14 +284,14 @@ $(document).ready(function() {
             } else {
                 console.log("WRONG");
                 $("#fail").show();
-                app.sendMessage(" t " + "r " + 255 + " " + 300 + "\r");
-                app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
-                app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
-                app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
-                app.sendMessage(" t " + "r " + 255 + " " + 300 + "\r");
-                app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
-                app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
-                app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
+                app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
+                app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
+                app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
+                app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
+                app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
+                app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
+                app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
                 $("#fail").addClass("bigEntrance");
                 $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
                 audio[0].pause();
@@ -295,7 +312,13 @@ $(document).ready(function() {
 
     };
 
+    $("#start").on("click", function() {
+        simon.startNew();
+    });
 
+    $("#fail").on("click", function() {
+        simon.fail();
+    });
 
     //BEGIN GAME
     simon.startNew = function() {
