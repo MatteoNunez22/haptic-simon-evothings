@@ -169,3 +169,14 @@ audio {
     left: 130px;
     top: 138px;
 }
+
+#turn {
+    position:absolute;
+    top:355px;
+    left:58px;
+    font-size:30px;
+    color:#22222;
+    width:200px;
+    text-align:center;
+
+}

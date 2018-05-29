@@ -1,6 +1,8 @@
 var simon = {
     simonId: "",
-    delay: 500
+    delay: 500,
+    yourTurn: false,
+    turn: "Simon's Turn"
 };
 
 var settings = {
@@ -27,9 +29,15 @@ simon.hapticSimonStart = function() {
     $('#hapticSimonView').show();
     $('#shoeButtons').hide();
     $('.experimentButton').hide();
+    simon.yourTurn = true;
+    simon.turn = "Your turn";
+    $("#turn").html(simon.turn);
 };
 
 simon.pressed = function(left, right, heel, toe) {
+    if(!simon.yourTurn){
+        return;
+    }
     winner = 0;
     winnerVal = 0;
     if (left > winnerVal){
@@ -48,7 +56,7 @@ simon.pressed = function(left, right, heel, toe) {
         winner = 4;
         winnerVal = toe;
     }
-    if (winnerVal < 950){
+    if (winnerVal < 1110){
         return;
     }
     switch(winner) {
@@ -59,8 +67,16 @@ simon.pressed = function(left, right, heel, toe) {
                 setTimeout(function(){
                     simon.simonId = "";
                 },300);
+                if ($("#fail").is(':hidden') && $("#start").is(':hidden')) {
+                    simon.animate("c");
+                }
+                else {
+                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                }
                 simon.listen();
-                simon.animate("c");
                 startTimeL = new Date();
             }
             break;
@@ -71,7 +87,15 @@ simon.pressed = function(left, right, heel, toe) {
                 setTimeout(function(){
                     simon.simonId = "";
                 },300);
-                simon.animate("b");
+                if ($("#fail").is(':hidden') && $("#start").is(':hidden')) {
+                    simon.animate("b");
+                }
+                else {
+                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                }
                 simon.listen();
                 startTimeR = new Date();
             }
@@ -83,7 +107,15 @@ simon.pressed = function(left, right, heel, toe) {
                 setTimeout(function(){
                     simon.simonId = "";
                 },300);
-                simon.animate("d");
+                if ($("#fail").is(':hidden') && $("#start").is(':hidden')) {
+                    simon.animate("d");
+                }
+                else {
+                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                }
                 simon.listen();
                 startTimeH = new Date();
             }
@@ -95,7 +127,15 @@ simon.pressed = function(left, right, heel, toe) {
                 setTimeout(function(){
                     simon.simonId = "";
                 },300);
-                simon.animate("a");
+                if ($("#fail").is(':hidden') && $("#start").is(':hidden')) {
+                    simon.animate("a");
+                }
+                else {
+                    app.sendMessage(" t " + "r " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "l " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "t " + 255 + " " + 200 + "\r");
+                    app.sendMessage(" t " + "h " + 255 + " " + 200 + "\r");
+                }
                 simon.listen();
                 startTimeT = new Date();
             }
@@ -122,21 +162,21 @@ $(document).ready(function() {
         if (divid == "a") {
             $("#a").css("border-color", "#1aff00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334537_4959932-lq.mp3");
-            app.sendMessage(" t " + "r " + 255 + " " + 300 + "\r");
+            app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
             setTimeout(function() {
                 $("#a").css("border-color", "#0b7000");
             }, 200);
         } else if (divid == "b") {
             $("#b").css("border-color", "#ff0b00");
             $("#tune").attr("src", "http://freesound.org/data/previews/334/334540_4959932-lq.mp3");
-            app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+            app.sendMessage(" t " + "r " + 255 + " " + 300 + "\r");
             setTimeout(function() {
                 $("#b").css("border-color", "#c30800");
             }, 200);
         } else if (divid == "c") {
             $("#c").css("border-color", "#ffec00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334542_4959932-lq.mp3");
-            app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
+            app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
             setTimeout(function() {
                 $("#c").css("border-color", "#c3b400");
             }, 200);
@@ -153,7 +193,7 @@ $(document).ready(function() {
         audio[0].load();
         audio[0].play();
 
-    }
+    };
 
 
 
@@ -179,6 +219,10 @@ $(document).ready(function() {
                     myLoop();
                 } else {
                     settings.playNumber = 0;
+                    simon.yourTurn = true;
+                    simon.turn = "Your turn";
+                    $("#turn").html(simon.turn);
+
                     //listen();
                 }
             }, settings.speed)
@@ -211,9 +255,7 @@ $(document).ready(function() {
 
                 // End of repeated sequence
                 if (settings.clicked === settings.sequence.length - 1) {
-                    //$("#a, #b, #c, #d").off("mousedown");
                     settings.clicked = 0;
-                    //$("#start").trigger("click");
                     simon.startNew();
                 } else {
                     console.log("Right!");
@@ -225,6 +267,14 @@ $(document).ready(function() {
             } else {
                 console.log("WRONG");
                 $("#fail").show();
+                app.sendMessage(" t " + "r " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "r " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "l " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "t " + 255 + " " + 300 + "\r");
+                app.sendMessage(" t " + "h " + 255 + " " + 300 + "\r");
                 $("#fail").addClass("bigEntrance");
                 $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
                 audio[0].pause();
@@ -234,33 +284,45 @@ $(document).ready(function() {
                 $("#simon, #count").css("-webkit-filter", "blur(5px)");
                 settings.clicked = 0;
                 $("#a, #b, #c, #d").off("mousedown");
-
+                simon.turn = "Your turn";
+                setTimeout(function(){
+                    simon.yourTurn = true;
+                    $("#turn").html(simon.turn);
+                },600);
             }
 
         }
 
-    }
+    };
 
 
 
     //BEGIN GAME
     simon.startNew = function() {
+        simon.yourTurn = false;
+        simon.turn = "Simon's turn";
+        $("#turn").html(simon.turn);
         $("#start").hide();
         $("#simon, #count").css("filter", "blur(0px)");
         $("#simon, #count").css("-webkit-filter", "blur(0px)");
         settings.round++;
         makeid(); // make id and play it
-        $("#count").html(settings.round);
+        setTimeout(function(){
+            $("#count").html(settings.round);
+        },600);
 
-    }
+    };
 
     // FAIL
     simon.fail = function() {
+        simon.yourTurn = false;
+        simon.turn = "Simon's turn";
+        $("#turn").html(simon.turn);
         $("#fail").hide();
         settings.sequence = [];
         settings.round = 0;
         settings.playNumber = 0,
-            settings.speed = 1000;
+        settings.speed = 1000;
         settings.clicked = 0;
         //$("#start").trigger("click");
         simon.startNew();
