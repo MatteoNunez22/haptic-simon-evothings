@@ -12,7 +12,7 @@ var settings = {
     speed: 1000,
     intensity: 255,
     duration: 400,
-    durationStart: 200,
+    durationStart: 300,
     durationFail: 200,
     clicked: 0
 
@@ -61,19 +61,19 @@ simon.pressed = function(left, right, heel, toe) {
         winnerVal = toe;
     }
     // Left
-    if (winner == 1 && winnerVal < 1150){
+    if (winner == 1 && winnerVal < 1120){
         return;
     }
     // Right
-    if (winner == 2 && winnerVal < 1200){
+    if (winner == 2 && winnerVal < 1205){
         return;
     }
     // Heel
-    if (winner == 3 && winnerVal < 1200){
+    if (winner == 3 && winnerVal < 1205){
         return;
     }
     // Toe
-    if (winner == 4 && winnerVal < 1150){
+    if (winner == 4 && winnerVal < 1120){
         return;
     }
     switch(winner) {

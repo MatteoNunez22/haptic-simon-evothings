@@ -1062,7 +1062,7 @@ app.receivedMessageRight = function(data) {
 			
 			app.sensorValues.tOrientation = time;
 
-			var matches = /Z(\d+)Y(\d+)P(\d+)O(\d+)/.exec(message);
+            var matches = /Z(\d+)Y([+-]?\d+)P([+-]?\d+)O([+-]?\d+)/.exec(message);
 			var height = parseInt(matches[1]);
 			var yaw = parseInt(matches[2]);
 			var pitch = parseInt(matches[3]);
@@ -1239,7 +1239,7 @@ app.receivedMessageLeft = function(data) {
 		else if (message.charAt(0) === 'C') {
 			app.sensorValues.tOrientation = time;
 
-			var matches = /Z(\d+)Y(\d+)P(\d+)O(\d+)/.exec(message);
+            var matches = /Z(\d+)Y([+-]?\d+)P([+-]?\d+)O([+-]?\d+)/.exec(message);
 			var height = parseInt(matches[1]);
 			var yaw = parseInt(matches[2]);
 			var pitch = 360-parseInt(matches[3]);
