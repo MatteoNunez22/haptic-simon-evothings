@@ -1,0 +1,14 @@
+{
+  "uuid": "0b7d6184-9fb8-4407-ac13-9fe3049dbfde",
+  "plugins": [],
+  "libraries": [],
+  "name": "hapticshoe_controller",
+  "title": "SRL Haptic Shoe Controller",
+  "description": "App oneline description.",
+  "long-description": "App long description.",
+  "version": "",
+  "author-name": "Evothings",
+  "author-email": "build@evothings.com",
+  "author-url": "https://evothings.com",
+  "cordova-id": "com.evothings.samples.hapticshoe.controller"
+}
