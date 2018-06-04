@@ -2,7 +2,9 @@ var simon = {
     simonId: "",
     delay: 700,
     yourTurn: false,
-    turn: "Simon's Turn"
+    turn: "Simon's Turn",
+    finishedP1: false,
+    finishedP2: false
 };
 
 var settings = {
@@ -15,6 +17,8 @@ var settings = {
     durationStart: 300,
     durationFail: 200,
     clicked: 0,
+    clickedP1: 0,
+    clickedP2: 0,
     mode: 0 // Singleplayer :   0
             // Multiplayer 1:   1
             // Multiplayer 2:   2
@@ -405,8 +409,10 @@ $(document).ready(function() {
         // Animate Sequence
         function myLoop() {
             setTimeout(function() {
+
                 simon.animate(settings.sequence[settings.playNumber]);
                 settings.playNumber++;
+
                 if (settings.playNumber < settings.sequence.length) {
                     myLoop();
                 } else {
@@ -427,7 +433,7 @@ $(document).ready(function() {
 
     // LISTEN
 
-     simon.listen = function() {
+    simon.listen = function() {
 
         // FAIL PRESS
         if ($("#fail").is(':visible')) {
@@ -438,17 +444,48 @@ $(document).ready(function() {
             simon.startNew();
 
         }
-
         // RIGHT
-        else if (simon.simonId == settings.sequence[settings.clicked]) {
+        else if (simon.mode == 0 && simon.simonId == settings.sequence[settings.clicked]) {
 
             // End of repeated sequence
             if (settings.clicked === settings.sequence.length - 1) {
                 settings.clicked = 0;
+                simon.finishedP1 = true;
                 simon.startNew();
             } else {
                 console.log("Right!");
                 settings.clicked++;
+            }
+
+        }
+
+        // RIGHT
+        else if (simon.mode == 1 && app.leftShoe && simon.simonId == settings.sequence[settings.clickedP1]) {
+
+            // End of repeated sequence
+            if (settings.clickedP1 === settings.sequence.length - 1) {
+                settings.clickedP1 = 0;
+                simon.finishedP1 = true;
+                if (simon.finishedP2) {
+                    simon.startNew();
+                }
+            } else {
+                console.log("Right!");
+                settings.clickedP1++;
+            }
+        }
+        else if (simon.mode == 1 && app.rightShoe && simon.simonId == settings.sequence[settings.clickedP2]) {
+
+            // End of repeated sequence
+            if (settings.clickedP2 === settings.sequence.length - 1) {
+                settings.clickedP2 = 0;
+                simon.finishedP2 = true;
+                if (simon.finishedP1) {
+                    simon.startNew();
+                }
+            } else {
+                console.log("Right!");
+                settings.clickedP2++;
             }
 
         // WRONG
@@ -471,12 +508,14 @@ $(document).ready(function() {
             $("#simon, #count").css("filter", "blur(5px)");
             $("#simon, #count").css("-webkit-filter", "blur(5px)");
             settings.clicked = 0;
+            settings.clickedP1 = 0;
+            settings.clickedP2 = 0;
             $("#a, #b, #c, #d").off("mousedown");
             simon.turn = "Your turn";
-            setTimeout(function(){
+            setTimeout(function () {
                 simon.yourTurn = true;
                 $("#turn").html(simon.turn);
-            },600);
+            }, 600);
         }
 
     };
@@ -491,6 +530,8 @@ $(document).ready(function() {
 
     //BEGIN GAME
     simon.startNew = function() {
+        simon.finishedP1 = false;
+        simon.finishedP2 = false;
         simon.yourTurn = false;
         simon.turn = "Simon's turn";
         $("#turn").html(simon.turn);
