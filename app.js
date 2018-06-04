@@ -913,7 +913,7 @@ app.sendMessage = function(message) {
 					onMessageSendFailure
 				);
 			}
-			else {
+			if(app.leftShoe) {                          // else {
 				app.deviceLeft.writeCharacteristic(
 				app.RBL_CHAR_RX_UUID,
 				data,

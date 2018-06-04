@@ -46,7 +46,7 @@ simon.hapticSimonStart = function() {
 simon.singlePlayer = function() {
     $('#simonInterface').hide();
     $('#hapticSimon').show();
-    simon.mode = 0;
+    settings.mode = 0;
     simon.yourTurn = true;
     simon.turn = "Your turn";
     $("#turn").html(simon.turn);
@@ -60,7 +60,7 @@ simon.multiPlayer = function() {
 simon.multiPlayer1 = function() {
     $('#multiplayerInterface').hide();
     $('#hapticSimon').show();
-    simon.mode = 1;
+    settings.mode = 1;
     simon.yourTurn = true;
     simon.turn = "Your turn";
     $("#turn").html(simon.turn);
@@ -69,7 +69,7 @@ simon.multiPlayer1 = function() {
 simon.multiPlayer2 = function() {
     $('#multiplayerInterface').hide();
     $('#hapticSimon').show();
-    simon.mode = 2;
+    settings.mode = 2;
     simon.yourTurn = true;
     simon.turn = "Your turn";
     $("#turn").html(simon.turn);
@@ -232,19 +232,19 @@ simon.pressedLeft = function(left, right, heel, toe) {
         winnerVal = toe;
     }
     // Left
-    if (winner == 1 && winnerVal < 1020){
+    if (winner == 1 && winnerVal < 920){
         return;
     }
     // Right
-    if (winner == 2 && winnerVal < 1105){
+    if (winner == 2 && winnerVal < 1005){
         return;
     }
     // Heel
-    if (winner == 3 && winnerVal < 1100){
+    if (winner == 3 && winnerVal < 1000){
         return;
     }
     // Toe
-    if (winner == 4 && winnerVal < 1020){
+    if (winner == 4 && winnerVal < 920){
         return;
     }
     switch(winner) {
@@ -409,7 +409,9 @@ $(document).ready(function() {
         // Animate Sequence
         function myLoop() {
             setTimeout(function() {
-
+                // Vibrate left shoe
+                app.leftShoe = true;
+                app.rightShoe = true;
                 simon.animate(settings.sequence[settings.playNumber]);
                 settings.playNumber++;
 
@@ -445,7 +447,7 @@ $(document).ready(function() {
 
         }
         // RIGHT
-        else if (simon.mode == 0 && simon.simonId == settings.sequence[settings.clicked]) {
+        else if (settings.mode == 0 && simon.simonId == settings.sequence[settings.clicked]) {
 
             // End of repeated sequence
             if (settings.clicked === settings.sequence.length - 1) {
@@ -460,7 +462,7 @@ $(document).ready(function() {
         }
 
         // RIGHT
-        else if (simon.mode == 1 && app.leftShoe && simon.simonId == settings.sequence[settings.clickedP1]) {
+        else if (settings.mode == 1 && app.leftShoe && simon.simonId == settings.sequence[settings.clickedP1]) {
 
             // End of repeated sequence
             if (settings.clickedP1 === settings.sequence.length - 1) {
@@ -474,7 +476,7 @@ $(document).ready(function() {
                 settings.clickedP1++;
             }
         }
-        else if (simon.mode == 1 && app.rightShoe && simon.simonId == settings.sequence[settings.clickedP2]) {
+        else if (settings.mode == 1 && app.rightShoe && simon.simonId == settings.sequence[settings.clickedP2]) {
 
             // End of repeated sequence
             if (settings.clickedP2 === settings.sequence.length - 1) {
@@ -489,9 +491,19 @@ $(document).ready(function() {
             }
 
         // WRONG
-        } else {
+        } else if ((app.leftShoe && !simon.finishedP1) || (app.rightShoe && !simon.finishedP2)) {
             console.log("WRONG");
             $("#fail").show();
+            if (settings.mode == 1) {
+                if (app.rightShoe) {
+                    simon.turn = "Winner: Player 1";
+                    $("#turn").html(simon.turn);
+                }
+                else if (app.leftShoe) {
+                    simon.turn = "Winner: Player 2";
+                    $("#turn").html(simon.turn);
+                }
+            }
             app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
             app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
             app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
@@ -512,10 +524,7 @@ $(document).ready(function() {
             settings.clickedP2 = 0;
             $("#a, #b, #c, #d").off("mousedown");
             simon.turn = "Your turn";
-            setTimeout(function () {
-                simon.yourTurn = true;
-                $("#turn").html(simon.turn);
-            }, 600);
+
         }
 
     };
