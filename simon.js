@@ -228,19 +228,19 @@ simon.pressedLeft = function(left, right, heel, toe) {
         winnerVal = toe;
     }
     // Left
-    if (winner == 1 && winnerVal < 1120){
+    if (winner == 1 && winnerVal < 1020){
         return;
     }
     // Right
-    if (winner == 2 && winnerVal < 1205){
+    if (winner == 2 && winnerVal < 1105){
         return;
     }
     // Heel
-    if (winner == 3 && winnerVal < 1200){
+    if (winner == 3 && winnerVal < 1100){
         return;
     }
     // Toe
-    if (winner == 4 && winnerVal < 1120){
+    if (winner == 4 && winnerVal < 1020){
         return;
     }
     switch(winner) {
@@ -429,60 +429,54 @@ $(document).ready(function() {
 
      simon.listen = function() {
 
-        // Button is pressed
-        if (simon.simonId == "a" || simon.simonId == "b"
-            || simon.simonId == "c" || simon.simonId == "d") {
+        // FAIL PRESS
+        if ($("#fail").is(':visible')) {
+            simon.fail();
+        }
+        // START PRESS
+        else if ($("#start").is(':visible')) {
+            simon.startNew();
 
-            // FAIL
-            if ($("#fail").is(':visible')) {
-                simon.fail();
-            }
+        }
 
-            else if ($("#start").is(':visible')) {
-                simon.startNew();
+        // RIGHT
+        else if (simon.simonId == settings.sequence[settings.clicked]) {
 
-            }
-
-            else if (simon.simonId == settings.sequence[settings.clicked]) {
-
-                // End of repeated sequence
-                if (settings.clicked === settings.sequence.length - 1) {
-                    settings.clicked = 0;
-                    simon.startNew();
-                } else {
-                    console.log("Right!");
-                    settings.clicked++;
-                }
-
-
-
-            } else {
-                console.log("WRONG");
-                $("#fail").show();
-                app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
-                app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
-                app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
-                app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
-                app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
-                app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
-                app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
-                app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
-                $("#fail").addClass("bigEntrance");
-                $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
-                audio[0].pause();
-                audio[0].load();
-                audio[0].play();
-                $("#simon, #count").css("filter", "blur(5px)");
-                $("#simon, #count").css("-webkit-filter", "blur(5px)");
+            // End of repeated sequence
+            if (settings.clicked === settings.sequence.length - 1) {
                 settings.clicked = 0;
-                $("#a, #b, #c, #d").off("mousedown");
-                simon.turn = "Your turn";
-                setTimeout(function(){
-                    simon.yourTurn = true;
-                    $("#turn").html(simon.turn);
-                },600);
+                simon.startNew();
+            } else {
+                console.log("Right!");
+                settings.clicked++;
             }
 
+        // WRONG
+        } else {
+            console.log("WRONG");
+            $("#fail").show();
+            app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
+            app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
+            app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
+            app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
+            app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
+            app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
+            app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
+            app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
+            $("#fail").addClass("bigEntrance");
+            $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
+            audio[0].pause();
+            audio[0].load();
+            audio[0].play();
+            $("#simon, #count").css("filter", "blur(5px)");
+            $("#simon, #count").css("-webkit-filter", "blur(5px)");
+            settings.clicked = 0;
+            $("#a, #b, #c, #d").off("mousedown");
+            simon.turn = "Your turn";
+            setTimeout(function(){
+                simon.yourTurn = true;
+                $("#turn").html(simon.turn);
+            },600);
         }
 
     };
