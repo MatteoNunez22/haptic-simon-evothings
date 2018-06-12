@@ -945,8 +945,6 @@ Number.prototype.map = function ( in_min , in_max , out_min , out_max ) {
 }
 
 
-var elapsed = new Date() - start;
-
 app.receivedMessageRight = function(data) {	
 	if(app.gauges){
 		if(numRecieved==0){

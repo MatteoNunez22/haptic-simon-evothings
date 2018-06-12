@@ -14,7 +14,7 @@ var settings = {
     speed: 1000,
     intensity: 255,
     duration: 400,
-    durationStart: 300,
+    durationStart: 200,
     durationFail: 200,
     clicked: 0,
     clickedP1: 0,
@@ -98,7 +98,7 @@ simon.pressedRight = function(left, right, heel, toe) {
         winnerVal = toe;
     }
     // Left
-    if (winner == 1 && winnerVal < 980){
+    if (winner == 1 && winnerVal < 975){ //980
         return;
     }
     // Right
@@ -110,7 +110,7 @@ simon.pressedRight = function(left, right, heel, toe) {
         return;
     }
     // Toe
-    if (winner == 4 && winnerVal < 980){
+    if (winner == 4 && winnerVal < 975){ //980
         return;
     }
     switch(winner) {
@@ -236,11 +236,11 @@ simon.pressedLeft = function(left, right, heel, toe) {
         return;
     }
     // Right
-    if (winner == 2 && winnerVal < 1005){
+    if (winner == 2 && winnerVal < 1005){ //1205
         return;
     }
     // Heel
-    if (winner == 3 && winnerVal < 1000){
+    if (winner == 3 && winnerVal < 1000){ //1200
         return;
     }
     // Toe
@@ -410,8 +410,10 @@ $(document).ready(function() {
         function myLoop() {
             setTimeout(function() {
                 // Vibrate left shoe
-                app.leftShoe = true;
-                app.rightShoe = true;
+                if (settings.mode > 0) {
+                    app.leftShoe = true;
+                    app.rightShoe = true;
+                }
                 simon.animate(settings.sequence[settings.playNumber]);
                 settings.playNumber++;
 
@@ -471,6 +473,10 @@ $(document).ready(function() {
                 if (simon.finishedP2) {
                     simon.startNew();
                 }
+                else {
+                    simon.turn = "Waiting for Player 2";
+                    $("#turn").html(simon.turn);
+                }
             } else {
                 console.log("Right!");
                 settings.clickedP1++;
@@ -484,6 +490,10 @@ $(document).ready(function() {
                 simon.finishedP2 = true;
                 if (simon.finishedP1) {
                     simon.startNew();
+                }
+                else {
+                    simon.turn = "Waiting for Player 1";
+                    $("#turn").html(simon.turn);
                 }
             } else {
                 console.log("Right!");
