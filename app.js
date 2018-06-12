@@ -2603,7 +2603,7 @@ app.zoomCal = function() {
 }
 
 app.userCommand = function() {
-    let command = document.getElementById('userCommand').value;
+    var command = document.getElementById('userCommand').value;
     console.log(command);
     app.sendMessage(" " + command.trim() + "\r");
     //app.sendMessage(" p " + 1 + "t" + "\r");
