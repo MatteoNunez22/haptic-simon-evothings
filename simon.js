@@ -405,6 +405,7 @@ $(document).ready(function() {
 
     // Generate Simon sequence
     function makeid() {
+
         if (settings.mode == 0) {
             var text = "";
             var possible = "abcd";
@@ -453,8 +454,11 @@ $(document).ready(function() {
 
         // FAIL PRESS
         if ($("#fail").is(':visible')) {
-            simon.startFail();
-
+            if (settings.mode > 0) {
+                chat.startFail();
+            } else {
+                simon.startFail();
+            }
         }
         // START PRESS
         else if ($("#start").is(':visible')) {
@@ -463,7 +467,6 @@ $(document).ready(function() {
             } else {
                 simon.startNew();
             }
-
         }
         // RIGHT
         else if (settings.mode == 0 && simon.simonId == settings.sequence[settings.clicked]) {
@@ -571,7 +574,11 @@ $(document).ready(function() {
     });
 
     $("#fail").on("click", function() {
-        simon.startFail();
+        if (settings.mode > 0) {
+            chat.startFail();
+        } else {
+            simon.startFail();
+        }
     });
 
     //BEGIN GAME
@@ -617,6 +624,7 @@ $(document).ready(function() {
             simon.turn = "Your turn";
             $("#turn").html(simon.turn);
         }
+        settings.sequence = [];
     };
 
     simon.startFail = function() {

@@ -18,10 +18,10 @@ chat.connect = function() {
         socket.emit('generate', {});
     };
 
-    chat.passShoe = function (player, value) {
+    chat.passShoe = function (player, finished) {
         socket.emit('shoe', {
-            player: player,    // Player: 1 or 2
-            value: value      // Value: true or false
+            player: player.value ,    // Player: 1 or 2
+            finished: finished.value      // Finished: true or false
         });
     };
 
@@ -33,6 +33,10 @@ chat.connect = function() {
         socket.emit('startnew', {})
     };
 
+    chat.startFail = function () {
+        socket.emit('startfail', {})
+    };
+
     // Listen for events
     socket.on('generate', function(text) {
         letter = text;
@@ -41,10 +45,11 @@ chat.connect = function() {
     });
 
     socket.on('shoe', function(data) {
+        console.log('!!!!!!! data.player = ', data.player);
         if(data.player == 1) {
-            simon.finishedP1 = data.value;
+            simon.finishedP1 = data.finished;
         } else {
-            simon.finishedP2 = data.value;
+            simon.finishedP2 = data.finished;
         }
     });
 
@@ -55,5 +60,10 @@ chat.connect = function() {
     socket.on('startnew', function() {
         simon.startNew();
     });
+
+    socket.on('startfail', function() {
+        simon.startFail();
+    });
+
 
 };
