@@ -412,8 +412,8 @@ $(document).ready(function() {
             settings.sequence.push(text);
 
         }
-
-
+        console.log(settings.sequence);
+        //chat.generateLetter();
 
         // Animate Sequence
         function myLoop() {

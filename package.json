@@ -1,0 +1,23 @@
+{
+  "name": "haptic-simon-evothings",
+  "version": "1.0.0",
+  "description": "If connection takes a long time, clear Evothings data/cache in the android app manager.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatteoNunez22/haptic-simon-evothings.git"
+  },
+  "author": "Matteo Nunez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatteoNunez22/haptic-simon-evothings/issues"
+  },
+  "homepage": "https://github.com/MatteoNunez22/haptic-simon-evothings#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1"
+  }
+}
