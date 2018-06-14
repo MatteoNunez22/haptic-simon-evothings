@@ -64,6 +64,7 @@ simon.singlePlayer = function() {
 simon.multiPlayer = function() {
     $('#simonInterface').hide();
     $('#multiplayerInterface').show();
+    chat.connect();
 };
 
 simon.multiPlayer1 = function() {
@@ -404,25 +405,27 @@ $(document).ready(function() {
 
     // Generate Simon sequence
     function makeid() {
-        var text = "";
-        var possible = "abcd";
+        if (settings.mode == 0) {
+            var text = "";
+            var possible = "abcd";
 
-        for (var i = 0; i < 1; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-            settings.sequence.push(text);
+            for (var i = 0; i < 1; i++) {
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+                settings.sequence.push(text);
 
+            }
         }
-        console.log(settings.sequence);
-        //chat.generateLetter();
+        else { chat.generateLetter(); } // Server-generated sequence
 
+        console.log(settings.sequence);
         // Animate Sequence
         function myLoop() {
             setTimeout(function() {
                 // Vibrate left shoe
-                if (settings.mode > 0) {
+                /*if (settings.mode > 0) {
                     app.leftShoe = true;
                     app.rightShoe = true;
-                }
+                }*/
                 simon.animate(settings.sequence[settings.playNumber]);
                 settings.playNumber++;
 
@@ -450,11 +453,16 @@ $(document).ready(function() {
 
         // FAIL PRESS
         if ($("#fail").is(':visible')) {
-            simon.fail();
+            simon.startFail();
+
         }
         // START PRESS
         else if ($("#start").is(':visible')) {
-            simon.startNew();
+            if (settings.mode > 0) {
+                chat.startNew();
+            } else {
+                simon.startNew();
+            }
 
         }
         // RIGHT
@@ -463,7 +471,11 @@ $(document).ready(function() {
             // End of repeated sequence
             if (settings.clicked === settings.sequence.length - 1) {
                 settings.clicked = 0;
-                simon.startNew();
+                if (settings.mode > 0) {
+                    chat.startNew();
+                } else {
+                    simon.startNew();
+                }
             } else {
                 console.log("Right!");
                 settings.clicked++;
@@ -471,15 +483,25 @@ $(document).ready(function() {
 
         }
 
-        // RIGHT
+        // CORRECT
         else if (settings.mode == 1 && app.leftShoe && simon.simonId == settings.sequence[settings.clickedP1]) {
 
             // End of repeated sequence
             if (settings.clickedP1 === settings.sequence.length - 1) {
                 settings.clickedP1 = 0;
-                simon.finishedP1 = true;
+
+                if (settings.mode > 0){
+                    chat.passShoe(1, true)
+                } else {
+                    simon.finishedP1 = true;
+                }
+
                 if (simon.finishedP2) {
-                    simon.startNew();
+                    if (settings.mode > 0) {
+                        chat.startNew();
+                    } else {
+                        simon.startNew();
+                    }
                 }
                 else {
                     simon.turn = "Waiting for Player 2";
@@ -495,9 +517,19 @@ $(document).ready(function() {
             // End of repeated sequence
             if (settings.clickedP2 === settings.sequence.length - 1) {
                 settings.clickedP2 = 0;
-                simon.finishedP2 = true;
+
+                if (settings.mode > 0){
+                    chat.passShoe(2, true)
+                } else {
+                    simon.finishedP2 = true;
+                }
+
                 if (simon.finishedP1) {
-                    simon.startNew();
+                    if (settings.mode > 0) {
+                        chat.startNew();
+                    } else {
+                        simon.startNew();
+                    }
                 }
                 else {
                     simon.turn = "Waiting for Player 1";
@@ -511,48 +543,35 @@ $(document).ready(function() {
         // WRONG
         } else if ((app.leftShoe && !simon.finishedP1) || (app.rightShoe && !simon.finishedP2)) {
             console.log("WRONG");
-            $("#fail").show();
-            if (settings.mode == 1) {
+            if (settings.mode > 0) {
                 if (app.rightShoe) {
                     simon.turn = "Winner: Player 1";
                     $("#turn").html(simon.turn);
+                    chat.fail();
                 }
                 else if (app.leftShoe) {
                     simon.turn = "Winner: Player 2";
                     $("#turn").html(simon.turn);
+                    chat.fail();
                 }
-            }
-            app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
-            app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
-            app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
-            app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
-            app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
-            app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
-            app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
-            app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
-            $("#fail").addClass("bigEntrance");
-            $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
-            audio[0].pause();
-            audio[0].load();
-            audio[0].play();
-            $("#simon, #count").css("filter", "blur(5px)");
-            $("#simon, #count").css("-webkit-filter", "blur(5px)");
-            settings.clicked = 0;
-            settings.clickedP1 = 0;
-            settings.clickedP2 = 0;
-            $("#a, #b, #c, #d").off("mousedown");
-            simon.turn = "Your turn";
 
+            } else {
+                simon.fail();
+            }
         }
 
     };
 
     $("#start").on("click", function() {
-        simon.startNew();
+        if (settings.mode > 0) {
+            chat.startNew();
+        } else {
+            simon.startNew();
+        }
     });
 
     $("#fail").on("click", function() {
-        simon.fail();
+        simon.startFail();
     });
 
     //BEGIN GAME
@@ -570,23 +589,52 @@ $(document).ready(function() {
         setTimeout(function(){
             $("#count").html(settings.round);
         },600);
-
     };
 
     // FAIL
     simon.fail = function() {
+        $("#fail").show();
+        app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
+        $("#fail").addClass("bigEntrance");
+        $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
+        audio[0].pause();
+        audio[0].load();
+        audio[0].play();
+        $("#simon, #count").css("filter", "blur(5px)");
+        $("#simon, #count").css("-webkit-filter", "blur(5px)");
+        settings.clicked = 0;
+        settings.clickedP1 = 0;
+        settings.clickedP2 = 0;
+        $("#a, #b, #c, #d").off("mousedown");
+        if (settings.mode == 0) {
+            simon.turn = "Your turn";
+            $("#turn").html(simon.turn);
+        }
+    };
+
+    simon.startFail = function() {
         simon.yourTurn = false;
         simon.turn = "Simon's turn";
         $("#turn").html(simon.turn);
         $("#fail").hide();
         settings.sequence = [];
         settings.round = 0;
-        settings.playNumber = 0,
+        settings.playNumber = 0;
         settings.speed = 1000;
         settings.clicked = 0;
         //$("#start").trigger("click");
-        simon.startNew();
-
+        if (settings.mode > 0) {
+            chat.startNew();
+        } else {
+            simon.startNew();
+        }
     };
 
 }); //document ready

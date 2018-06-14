@@ -913,13 +913,13 @@ app.sendMessage = function(message) {
 					onMessageSendFailure
 				);
 			}
-			if(app.leftShoe) {                          // else {
+			/*if(app.leftShoe) {*/                           else {
 				app.deviceLeft.writeCharacteristic(
 				app.RBL_CHAR_RX_UUID,
 				data,
 				onMessageSendSucces,
 				onMessageSendFailure
-			);
+				);
 			}
 		}
 		else {
