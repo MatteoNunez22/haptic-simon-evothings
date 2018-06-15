@@ -130,9 +130,7 @@ simon.pressedRight = function(left, right, heel, toe) {
                 app.rightShoe = true;
                 app.leftShoe = false;
                 simon.simonId = "c";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
                     simon.animate("c");
                 }
@@ -152,9 +150,7 @@ simon.pressedRight = function(left, right, heel, toe) {
                 app.rightShoe = true;
                 app.leftShoe = false;
                 simon.simonId = "b";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
                     simon.animate("b");
                 }
@@ -174,9 +170,7 @@ simon.pressedRight = function(left, right, heel, toe) {
                 app.rightShoe = true;
                 app.leftShoe = false;
                 simon.simonId = "d";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
                     simon.animate("d");
                 }
@@ -196,9 +190,7 @@ simon.pressedRight = function(left, right, heel, toe) {
                 app.rightShoe = true;
                 app.leftShoe = false;
                 simon.simonId = "a";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
                     simon.animate("a");
                 }
@@ -264,9 +256,7 @@ simon.pressedLeft = function(left, right, heel, toe) {
                 app.rightShoe = false;
                 app.leftShoe = true;
                 simon.simonId = "c";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
                     simon.animate("c");
                 }
@@ -286,9 +276,7 @@ simon.pressedLeft = function(left, right, heel, toe) {
                 app.rightShoe = false;
                 app.leftShoe = true;
                 simon.simonId = "b";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
                     simon.animate("b");
                 }
@@ -308,9 +296,7 @@ simon.pressedLeft = function(left, right, heel, toe) {
                 app.rightShoe = false;
                 app.leftShoe = true;
                 simon.simonId = "d";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
                     simon.animate("d");
                 }
@@ -330,9 +316,7 @@ simon.pressedLeft = function(left, right, heel, toe) {
                 app.rightShoe = false;
                 app.leftShoe = true;
                 simon.simonId = "a";
-                setTimeout(function(){
-                    simon.simonId = "";
-                },300);
+
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
                     simon.animate("a");
                 }
@@ -549,14 +533,10 @@ $(document).ready(function() {
             console.log("WRONG");
             if (settings.mode > 0) {
                 if (app.rightShoe) {
-                    simon.turn = "Winner: Player 1";
-                    $("#turn").html(simon.turn);
-                    chat.fail();
+                    chat.fail(2);
                 }
                 else if (app.leftShoe) {
-                    simon.turn = "Winner: Player 2";
-                    $("#turn").html(simon.turn);
-                    chat.fail();
+                    chat.fail(1);
                 }
 
             } else {
@@ -593,6 +573,10 @@ $(document).ready(function() {
         $("#simon, #count").css("filter", "blur(0px)");
         $("#simon, #count").css("-webkit-filter", "blur(0px)");
         if (settings.round == 0) {
+            settings.clicked = 0;
+            settings.clickedP1 = 0;
+            settings.clickedP2 = 0;
+
             if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
                 chat.makeid();
             } else if (settings.mode == 0) {
@@ -624,9 +608,7 @@ $(document).ready(function() {
         audio[0].play();
         $("#simon, #count").css("filter", "blur(5px)");
         $("#simon, #count").css("-webkit-filter", "blur(5px)");
-        settings.clicked = 0;
-        settings.clickedP1 = 0;
-        settings.clickedP2 = 0;
+
         $("#a, #b, #c, #d").off("mousedown");
         if (settings.mode == 0) {
             simon.turn = "Your turn";
@@ -645,6 +627,8 @@ $(document).ready(function() {
         settings.playNumber = 0;
         settings.speed = 1000;
         settings.clicked = 0;
+        settings.clickedP1 = 0;
+        settings.clickedP2 = 0;
         if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
             chat.startNew();
         } else if (settings.mode == 0) {

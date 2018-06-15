@@ -18,15 +18,14 @@ chat.connect = function() {
         socket.emit('generate', {});
     };
 
-    chat.passShoe = function (player, finished) {
-        socket.emit('shoe', {
-            player: player.value ,    // Player: 1 or 2
-            finished: finished.value      // Finished: true or false
-        });
+    chat.passShoe = function (player, finished) {    // Player: 1 or 2
+        socket.emit('shoe', player, finished );    // Finished: true or false
+        console.log('player = ' + player);
+        console.log('finished = ' + finished);
     };
 
-    chat.fail = function () {
-        socket.emit('fail', {})
+    chat.fail = function (loser) {
+        socket.emit('fail', loser)    // Loser: 1 or 2
     };
 
     chat.startNew = function () {
@@ -45,16 +44,36 @@ chat.connect = function() {
         $("#letter").html(letter);
     });
 
-    socket.on('shoe', function(data) {
-        console.log('!!!!!!! data.player = ', data.player);
-        if(data.player == 1) {
-            simon.finishedP1 = data.finished;
-        } else {
-            simon.finishedP2 = data.finished;
+    socket.on('shoe', function(player, finished) {
+        console.log('!!!!!!! player = ' + player);
+        console.log('!!!!!!! finished = ' + finished);
+        if(player === 1) {
+            simon.finishedP1 = finished;
+        } else if (player === 2) {
+            simon.finishedP2 = finished;
         }
     });
 
-    socket.on('fail', function() {
+    socket.on('fail', function(loser) {
+        if (loser === 1) {
+            if (app.leftShoe) {
+                simon.turn = "You lose!";
+                $("#turn").html(simon.turn);
+            }
+            else if (app.rightShoe) {
+                simon.turn = "You win!";
+                $("#turn").html(simon.turn);
+            }
+        } else if (loser === 2) {
+            if (app.leftShoe) {
+                simon.turn = "You win!";
+                $("#turn").html(simon.turn);
+            }
+            else if (app.rightShoe) {
+                simon.turn = "You lose!";
+                $("#turn").html(simon.turn);
+            }
+        }
         simon.fail();
     });
 
