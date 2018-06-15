@@ -14,7 +14,7 @@ chat.connect = function() {
         socket.emit('generate', {});
     });
 
-    chat.generateLetter = function () {
+    chat.makeid = function () {
         socket.emit('generate', {});
     };
 
@@ -39,9 +39,10 @@ chat.connect = function() {
 
     // Listen for events
     socket.on('generate', function(text) {
+        settings.sequence = text.split('');
+
         letter = text;
         $("#letter").html(letter);
-        settings.sequence.push(letter);
     });
 
     socket.on('shoe', function(data) {
@@ -62,8 +63,7 @@ chat.connect = function() {
     });
 
     socket.on('startfail', function() {
-        simon.startFail();
+        simon.startFail(); // Only one shoe sends message
     });
-
 
 };

@@ -406,19 +406,23 @@ $(document).ready(function() {
     // Generate Simon sequence
     function makeid() {
 
-        if (settings.mode == 0) {
+        if (settings.mode == 0)  {
             var text = "";
             var possible = "abcd";
 
-            for (var i = 0; i < 1; i++) {
+            for (var i = 0; i < 18; i++) {
                 text += possible.charAt(Math.floor(Math.random() * possible.length));
-                settings.sequence.push(text);
-
             }
+            settings.sequence = text.split('');
         }
-        else { chat.generateLetter(); } // Server-generated sequence
+        else { chat.makeid(); } // Server-generated sequence
 
-        console.log(settings.sequence);
+        console.log('New sequence: ' + settings.sequence);
+
+    }
+
+    function playit() {
+
         // Animate Sequence
         function myLoop() {
             setTimeout(function() {
@@ -430,7 +434,7 @@ $(document).ready(function() {
                 simon.animate(settings.sequence[settings.playNumber]);
                 settings.playNumber++;
 
-                if (settings.playNumber < settings.sequence.length) {
+                if (settings.playNumber < settings.round) {
                     myLoop();
                 } else {
                     settings.playNumber = 0;
@@ -452,6 +456,10 @@ $(document).ready(function() {
 
     simon.listen = function() {
 
+        settings.clicked++;
+        settings.clickedP1++;
+        settings.clickedP2++;
+
         // FAIL PRESS
         if ($("#fail").is(':visible')) {
             if (settings.mode > 0) {
@@ -468,29 +476,27 @@ $(document).ready(function() {
                 simon.startNew();
             }
         }
-        // RIGHT
-        else if (settings.mode == 0 && simon.simonId == settings.sequence[settings.clicked]) {
+        // CORRECT
+        else if (settings.mode == 0 && simon.simonId == settings.sequence[settings.clicked-1]) {
+            console.log("Right!");
 
             // End of repeated sequence
-            if (settings.clicked === settings.sequence.length - 1) {
+            if (settings.clicked === settings.round) {
                 settings.clicked = 0;
                 if (settings.mode > 0) {
                     chat.startNew();
                 } else {
                     simon.startNew();
                 }
-            } else {
-                console.log("Right!");
-                settings.clicked++;
             }
 
         }
 
-        // CORRECT
-        else if (settings.mode == 1 && app.leftShoe && simon.simonId == settings.sequence[settings.clickedP1]) {
+        else if (settings.mode == 1 && app.leftShoe && simon.simonId == settings.sequence[settings.clickedP1-1]) {
+            console.log("Right!");
 
             // End of repeated sequence
-            if (settings.clickedP1 === settings.sequence.length - 1) {
+            if (settings.clickedP1 === settings.round) {
                 settings.clickedP1 = 0;
 
                 if (settings.mode > 0){
@@ -510,15 +516,13 @@ $(document).ready(function() {
                     simon.turn = "Waiting for Player 2";
                     $("#turn").html(simon.turn);
                 }
-            } else {
-                console.log("Right!");
-                settings.clickedP1++;
             }
         }
-        else if (settings.mode == 1 && app.rightShoe && simon.simonId == settings.sequence[settings.clickedP2]) {
+        else if (settings.mode == 1 && app.rightShoe && simon.simonId == settings.sequence[settings.clickedP2-1]) {
+            console.log("Right!");
 
             // End of repeated sequence
-            if (settings.clickedP2 === settings.sequence.length - 1) {
+            if (settings.clickedP2 === settings.round) {
                 settings.clickedP2 = 0;
 
                 if (settings.mode > 0){
@@ -538,9 +542,6 @@ $(document).ready(function() {
                     simon.turn = "Waiting for Player 1";
                     $("#turn").html(simon.turn);
                 }
-            } else {
-                console.log("Right!");
-                settings.clickedP2++;
             }
 
         // WRONG
@@ -581,7 +582,7 @@ $(document).ready(function() {
         }
     });
 
-    //BEGIN GAME
+    // NEW ROUND
     simon.startNew = function() {
         simon.finishedP1 = false;
         simon.finishedP2 = false;
@@ -591,8 +592,15 @@ $(document).ready(function() {
         $("#start").hide();
         $("#simon, #count").css("filter", "blur(0px)");
         $("#simon, #count").css("-webkit-filter", "blur(0px)");
+        if (settings.round == 0) {
+            if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
+                chat.makeid();
+            } else if (settings.mode == 0) {
+                makeid();
+            }
+        }
         settings.round++;
-        makeid(); // make id and play it
+        playit();
         setTimeout(function(){
             $("#count").html(settings.round);
         },600);
@@ -637,10 +645,9 @@ $(document).ready(function() {
         settings.playNumber = 0;
         settings.speed = 1000;
         settings.clicked = 0;
-        //$("#start").trigger("click");
-        if (settings.mode > 0) {
+        if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
             chat.startNew();
-        } else {
+        } else if (settings.mode == 0) {
             simon.startNew();
         }
     };
