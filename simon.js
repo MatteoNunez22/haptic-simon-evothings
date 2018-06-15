@@ -108,19 +108,19 @@ simon.pressedRight = function(left, right, heel, toe) {
         winnerVal = toe;
     }
     // Left
-    if (winner == 1 && winnerVal < 975){ //980
+    if (winner === 1 && winnerVal < 975){ //980
         return;
     }
     // Right
-    if (winner == 2 && winnerVal < 980){
+    if (winner === 2 && winnerVal < 980){
         return;
     }
     // Heel
-    if (winner == 3 && winnerVal < 975){
+    if (winner === 3 && winnerVal < 975){
         return;
     }
     // Toe
-    if (winner == 4 && winnerVal < 975){ //980
+    if (winner === 4 && winnerVal < 975){ //980
         return;
     }
     switch(winner) {
@@ -234,19 +234,19 @@ simon.pressedLeft = function(left, right, heel, toe) {
         winnerVal = toe;
     }
     // Left
-    if (winner == 1 && winnerVal < 920){
+    if (winner === 1 && winnerVal < 920){
         return;
     }
     // Right
-    if (winner == 2 && winnerVal < 1005){ //1205
+    if (winner === 2 && winnerVal < 1005){ //1205
         return;
     }
     // Heel
-    if (winner == 3 && winnerVal < 1000){ //1200
+    if (winner === 3 && winnerVal < 1000){ //1200
         return;
     }
     // Toe
-    if (winner == 4 && winnerVal < 910){
+    if (winner === 4 && winnerVal < 910){
         return;
     }
     switch(winner) {
@@ -349,28 +349,28 @@ $(document).ready(function() {
             settings.speed = 500
         }
         <!-- a: c5.wav   b: g4.wav   c: e4.wav   d: c4.wav -->
-        if (divid == "a") {
+        if (divid === "a") {
             $("#a").css("border-color", "#1aff00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334537_4959932-lq.mp3");
             app.sendMessage(" t " + "t " + settings.intensity + " " + settings.duration + "\r");
             setTimeout(function() {
                 $("#a").css("border-color", "#0b7000");
             }, 200);
-        } else if (divid == "b") {
+        } else if (divid === "b") {
             $("#b").css("border-color", "#ff0b00");
             $("#tune").attr("src", "http://freesound.org/data/previews/334/334540_4959932-lq.mp3");
             app.sendMessage(" t " + "r " + settings.intensity + " " + settings.duration + "\r");
             setTimeout(function() {
                 $("#b").css("border-color", "#c30800");
             }, 200);
-        } else if (divid == "c") {
+        } else if (divid === "c") {
             $("#c").css("border-color", "#ffec00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334542_4959932-lq.mp3");
             app.sendMessage(" t " + "l " + settings.intensity + " " + settings.duration + "\r");
             setTimeout(function() {
                 $("#c").css("border-color", "#c3b400");
             }, 200);
-        } else if (divid == "d") {
+        } else if (divid === "d") {
             $("#d").css("border-color", "#29abd0");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334538_4959932-lq.mp3");
             app.sendMessage(" t " + "h " + settings.intensity + " " + settings.duration + "\r");
@@ -390,7 +390,7 @@ $(document).ready(function() {
     // Generate Simon sequence
     function makeid() {
 
-        if (settings.mode == 0)  {
+        if (settings.mode === 0)  {
             var text = "";
             var possible = "abcd";
 
@@ -461,7 +461,7 @@ $(document).ready(function() {
             }
         }
         // CORRECT
-        else if (settings.mode == 0 && simon.simonId == settings.sequence[settings.clicked-1]) {
+        else if (settings.mode === 0 && simon.simonId === settings.sequence[settings.clicked-1]) {
             console.log("Right!");
 
             // End of repeated sequence
@@ -476,7 +476,7 @@ $(document).ready(function() {
 
         }
 
-        else if (settings.mode == 1 && app.leftShoe && simon.simonId == settings.sequence[settings.clickedP1-1]) {
+        else if (settings.mode === 1 && app.leftShoe && simon.simonId === settings.sequence[settings.clickedP1-1]) {
             console.log("Right!");
 
             // End of repeated sequence
@@ -502,7 +502,7 @@ $(document).ready(function() {
                 }
             }
         }
-        else if (settings.mode == 1 && app.rightShoe && simon.simonId == settings.sequence[settings.clickedP2-1]) {
+        else if (settings.mode === 1 && app.rightShoe && simon.simonId === settings.sequence[settings.clickedP2-1]) {
             console.log("Right!");
 
             // End of repeated sequence
@@ -572,14 +572,14 @@ $(document).ready(function() {
         $("#start").hide();
         $("#simon, #count").css("filter", "blur(0px)");
         $("#simon, #count").css("-webkit-filter", "blur(0px)");
-        if (settings.round == 0) {
+        if (settings.round === 0) {
             settings.clicked = 0;
             settings.clickedP1 = 0;
             settings.clickedP2 = 0;
 
             if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
                 chat.makeid();
-            } else if (settings.mode == 0) {
+            } else if (settings.mode === 0) {
                 makeid();
             }
         }
@@ -631,7 +631,7 @@ $(document).ready(function() {
         settings.clickedP2 = 0;
         if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
             chat.startNew();
-        } else if (settings.mode == 0) {
+        } else if (settings.mode === 0) {
             simon.startNew();
         }
     };
