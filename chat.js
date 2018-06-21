@@ -14,26 +14,24 @@ chat.connect = function() {
         socket.emit('generate', {});
     });
 
-    chat.makeid = function () {
+    chat.createSequence = function () {
         socket.emit('generate', {});
     };
 
-    chat.passShoe = function (player, finished) {    // Player: 1 or 2
-        socket.emit('shoe', player, finished );    // Finished: true or false
-        console.log('player = ' + player);
-        console.log('finished = ' + finished);
+    chat.finished = function (player, finished) {    // Player: 1 or 2
+        socket.emit('shoe', player, finished );     // Finished: true or false
     };
 
     chat.fail = function (loser) {
         socket.emit('fail', loser)    // Loser: 1 or 2
     };
 
-    chat.startNew = function () {
-        socket.emit('startnew', {})
+    chat.nextRound = function () {
+        socket.emit('nextRound', {})
     };
 
-    chat.startFail = function () {
-        socket.emit('startfail', {})
+    chat.startAgain = function () {
+        socket.emit('startAgain', {})
     };
 
     // Listen for events
@@ -45,8 +43,6 @@ chat.connect = function() {
     });
 
     socket.on('shoe', function(player, finished) {
-        console.log('!!!!!!! player = ' + player);
-        console.log('!!!!!!! finished = ' + finished);
         if(player === 1) {
             simon.finishedP1 = finished;
         } else if (player === 2) {
@@ -77,12 +73,12 @@ chat.connect = function() {
         simon.fail();
     });
 
-    socket.on('startnew', function() {
-        simon.startNew();
+    socket.on('nextRound', function() {
+        simon.nextRound();
     });
 
-    socket.on('startfail', function() {
-        simon.startFail(); // Only one shoe sends message
+    socket.on('startAgain', function() {
+        simon.startAgain(); // Only one shoe sends message
     });
 
 };

@@ -1037,7 +1037,7 @@ app.receivedMessageRight = function(data) {
             }
 
             if ($('#hapticSimonView').is(':visible')) {
-                simon.pressedRight(leftVal, rightVal, heelVal, toeVal);
+                simon.rightPress(leftVal, rightVal, heelVal, toeVal);
             }
 
 			if (app.gauges) {
@@ -1215,7 +1215,7 @@ app.receivedMessageLeft = function(data) {
             }
 
             if ($('#hapticSimonView').is(':visible')) {
-                simon.pressedLeft(leftVal, rightVal, heelVal, toeVal);
+                simon.leftPress(leftVal, rightVal, heelVal, toeVal);
             }
 
 			if (app.gauges) {

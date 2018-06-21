@@ -1,6 +1,5 @@
 var simon = {
     simonId: "",
-    delay: 700,
     yourTurn: false,
     turn: "Simon's Turn",
     finishedP1: false,
@@ -12,10 +11,12 @@ var settings = {
     round: 0,
     playNumber: 0,
     speed: 1000,
+    delay: 700,
+    delayFail: 1500,
     intensity: 255,
-    duration: 400,
-    durationStart: 200,
-    durationFail: 200,
+    duration: 500,
+    durationStart: 300,
+    durationFail: 500,
     clicked: 0,
     clickedP1: 0,
     clickedP2: 0,
@@ -24,23 +25,29 @@ var settings = {
             // Multiplayer 2:   2
 };
 
-var startTimeL1 = new Date();
-var endTimeL1 = new Date();
-var startTimeR1 = new Date();
-var endTimeR1 = new Date();
-var startTimeH1 = new Date();
-var endTimeH1 = new Date();
-var startTimeT1 = new Date();
-var endTimeT1 = new Date();
+// Timing variables (Left)
+var startTimeL1 = new Date(),
+    endTimeL1 = new Date(),
+    startTimeR1 = new Date(),
+    endTimeR1 = new Date(),
+    startTimeH1 = new Date(),
+    endTimeH1 = new Date(),
+    startTimeT1 = new Date(),
+    endTimeT1 = new Date();
 
-var startTimeL2 = new Date();
-var endTimeL2 = new Date();
-var startTimeR2 = new Date();
-var endTimeR2 = new Date();
-var startTimeH2 = new Date();
-var endTimeH2 = new Date();
-var startTimeT2 = new Date();
-var endTimeT2 = new Date();
+// Timing variables (Right)
+var startTimeL2 = new Date(),
+    endTimeL2 = new Date(),
+    startTimeR2 = new Date(),
+    endTimeR2 = new Date(),
+    startTimeH2 = new Date(),
+    endTimeH2 = new Date(),
+    startTimeT2 = new Date(),
+    endTimeT2 = new Date();
+
+// Timing variables (Fail)
+var startTimeF = new Date(),
+    endTimeF = new Date();
 
 simon.hapticSimonStart = function() {
     $('#title').hide();
@@ -85,274 +92,232 @@ simon.multiPlayer2 = function() {
     $("#turn").html(simon.turn);
 };
 
-simon.pressedRight = function(left, right, heel, toe) {
-    if(!simon.yourTurn){
-        return;
-    }
-    winner = 0;
-    winnerVal = 0;
-    if (left > winnerVal){
-        winner = 1;
-        winnerVal = left;
-    }
-    if (right > winnerVal){
-        winner = 2;
-        winnerVal = right;
-    }
-    if (heel > winnerVal){
-        winner = 3;
-        winnerVal = heel;
-    }
-    if (toe > winnerVal){
-        winner = 4;
-        winnerVal = toe;
-    }
-    // Left
-    if (winner === 1 && winnerVal < 975){ //980
-        return;
-    }
-    // Right
-    if (winner === 2 && winnerVal < 980){
-        return;
-    }
-    // Heel
-    if (winner === 3 && winnerVal < 975){
-        return;
-    }
-    // Toe
-    if (winner === 4 && winnerVal < 975){ //980
-        return;
-    }
-    switch(winner) {
-        case 1:
-            endTimeL1 = new Date();
-            if ((endTimeL1-startTimeL1) >= simon.delay) {
-                app.rightShoe = true;
-                app.leftShoe = false;
-                simon.simonId = "c";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("c");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeL1 = new Date();
-            }
-            break;
-        case 2:
-            endTimeR1 = new Date();
-            if ((endTimeR1-startTimeR1) >= simon.delay) {
-                app.rightShoe = true;
-                app.leftShoe = false;
-                simon.simonId = "b";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("b");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeR1 = new Date();
-            }
-            break;
-        case 3:
-            endTimeH1 = new Date();
-            if ((endTimeH1-startTimeH1) >= simon.delay) {
-                app.rightShoe = true;
-                app.leftShoe = false;
-                simon.simonId = "d";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("d");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeH1 = new Date();
-            }
-            break;
-        case 4:
-            endTimeT1 = new Date();
-            if ((endTimeT1-startTimeT1) >= simon.delay) {
-                app.rightShoe = true;
-                app.leftShoe = false;
-                simon.simonId = "a";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("a");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeT1 = new Date();
-            }
-            break;
-
-        default:
-            break;
-
-    }
-};
-
-simon.pressedLeft = function(left, right, heel, toe) {
-    if(!simon.yourTurn){
-        return;
-    }
-    winner = 0;
-    winnerVal = 0;
-    if (left > winnerVal){
-        winner = 1;
-        winnerVal = left;
-    }
-    if (right > winnerVal){
-        winner = 2;
-        winnerVal = right;
-    }
-    if (heel > winnerVal){
-        winner = 3;
-        winnerVal = heel;
-    }
-    if (toe > winnerVal){
-        winner = 4;
-        winnerVal = toe;
-    }
-    // Left
-    if (winner === 1 && winnerVal < 920){
-        return;
-    }
-    // Right
-    if (winner === 2 && winnerVal < 1005){ //1205
-        return;
-    }
-    // Heel
-    if (winner === 3 && winnerVal < 1000){ //1200
-        return;
-    }
-    // Toe
-    if (winner === 4 && winnerVal < 910){
-        return;
-    }
-    switch(winner) {
-        case 1:
-            endTimeL2 = new Date();
-            if ((endTimeL2-startTimeL2) >= simon.delay) {
-                app.rightShoe = false;
-                app.leftShoe = true;
-                simon.simonId = "c";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("c");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeL2 = new Date();
-            }
-            break;
-        case 2:
-            endTimeR2 = new Date();
-            if ((endTimeR2-startTimeR2) >= simon.delay) {
-                app.rightShoe = false;
-                app.leftShoe = true;
-                simon.simonId = "b";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("b");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeR2 = new Date();
-            }
-            break;
-        case 3:
-            endTimeH2 = new Date();
-            if ((endTimeH2-startTimeH2) >= simon.delay) {
-                app.rightShoe = false;
-                app.leftShoe = true;
-                simon.simonId = "d";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("d");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeH2 = new Date();
-            }
-            break;
-        case 4:
-            endTimeT2 = new Date();
-            if ((endTimeT2-startTimeT2) >= simon.delay) {
-                app.rightShoe = false;
-                app.leftShoe = true;
-                simon.simonId = "a";
-
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("a");
-                }
-                else {
-                    app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationStart + "\r");
-                    app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationStart + "\r");
-                }
-                simon.listen();
-                startTimeT2 = new Date();
-            }
-            break;
-
-        default:
-            break;
-
-    }
-};
-
 $(document).ready(function() {
+
+    // Listen to right shoe
+    simon.rightPress = function(left, right, heel, toe) {
+        if(!simon.yourTurn){
+            return;
+        }
+        winner = 0;
+        winnerVal = 0;
+        if (left > winnerVal){
+            winner = 1;
+            winnerVal = left;
+        }
+        if (right > winnerVal){
+            winner = 2;
+            winnerVal = right;
+        }
+        if (heel > winnerVal){
+            winner = 3;
+            winnerVal = heel;
+        }
+        if (toe > winnerVal){
+            winner = 4;
+            winnerVal = toe;
+        }
+        // Left
+        if (winner === 1 && winnerVal < 980){ //980
+            return;
+        }
+        // Right
+        if (winner === 2 && winnerVal < 980){ //980
+            return;
+        }
+        // Heel
+        if (winner === 3 && winnerVal < 975){ //975
+            return;
+        }
+        // Toe
+        if (winner === 4 && winnerVal < 980){ //980
+            return;
+        }
+
+        switch(winner) {
+            case 1:
+                endTimeL1 = new Date();
+                if ((endTimeL1-startTimeL1) >= settings.delay) {
+                    app.rightShoe = true;
+                    app.leftShoe = false;
+                    simon.simonId = "c";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
+                        simon.animate("c");
+                    }
+                    simon.pressed();
+                    startTimeL1 = new Date();
+                }
+                break;
+            case 2:
+                endTimeR1 = new Date();
+                if ((endTimeR1-startTimeR1) >= settings.delay) {
+                    app.rightShoe = true;
+                    app.leftShoe = false;
+                    simon.simonId = "b";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
+                        simon.animate("b");
+                    }
+                    simon.pressed();
+                    startTimeR1 = new Date();
+                }
+                break;
+            case 3:
+                endTimeH1 = new Date();
+                if ((endTimeH1-startTimeH1) >= settings.delay) {
+                    app.rightShoe = true;
+                    app.leftShoe = false;
+                    simon.simonId = "d";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
+                        simon.animate("d");
+                    }
+                    simon.pressed();
+                    startTimeH1 = new Date();
+                }
+                break;
+            case 4:
+                endTimeT1 = new Date();
+                if ((endTimeT1-startTimeT1) >= settings.delay) {
+                    app.rightShoe = true;
+                    app.leftShoe = false;
+                    simon.simonId = "a";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
+                        simon.animate("a");
+                    }
+                    simon.pressed();
+                    startTimeT1 = new Date();
+                }
+                break;
+
+            default:
+                break;
+
+        }
+    };
+
+    // Listen to left shoe
+    simon.leftPress = function(left, right, heel, toe) {
+        if(!simon.yourTurn){
+            return;
+        }
+        winner = 0;
+        winnerVal = 0;
+        if (left > winnerVal){
+            winner = 1;
+            winnerVal = left;
+        }
+        if (right > winnerVal){
+            winner = 2;
+            winnerVal = right;
+        }
+        if (heel > winnerVal){
+            winner = 3;
+            winnerVal = heel;
+        }
+        if (toe > winnerVal){
+            winner = 4;
+            winnerVal = toe;
+        }
+        // Left
+        if (winner === 1 && winnerVal < 920){
+            return;
+        }
+        // Right
+        if (winner === 2 && winnerVal < 1005){ //1205
+            return;
+        }
+        // Heel
+        if (winner === 3 && winnerVal < 1000){ //1200
+            return;
+        }
+        // Toe
+        if (winner === 4 && winnerVal < 910){
+            return;
+        }
+        switch(winner) {
+            case 1:
+                endTimeL2 = new Date();
+                if ((endTimeL2-startTimeL2) >= settings.delay) {
+                    app.rightShoe = false;
+                    app.leftShoe = true;
+                    simon.simonId = "c";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
+                        simon.animate("c");
+                    }
+                    simon.pressed();
+                    startTimeL2 = new Date();
+                }
+                break;
+            case 2:
+                endTimeR2 = new Date();
+                if ((endTimeR2-startTimeR2) >= settings.delay) {
+                    app.rightShoe = false;
+                    app.leftShoe = true;
+                    simon.simonId = "b";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
+                        simon.animate("b");
+                    }
+                    simon.pressed();
+                    startTimeR2 = new Date();
+                }
+                break;
+            case 3:
+                endTimeH2 = new Date();
+                if ((endTimeH2-startTimeH2) >= settings.delay) {
+                    app.rightShoe = false;
+                    app.leftShoe = true;
+                    simon.simonId = "d";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
+                        simon.animate("d");
+                    }
+                    simon.pressed();
+                    startTimeH2 = new Date();
+                }
+                break;
+            case 4:
+                endTimeT2 = new Date();
+                if ((endTimeT2-startTimeT2) >= settings.delay) {
+                    app.rightShoe = false;
+                    app.leftShoe = true;
+                    simon.simonId = "a";
+
+                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
+                        simon.animate("a");
+                    }
+                    simon.pressed();
+                    startTimeT2 = new Date();
+                }
+                break;
+
+            default:
+                break;
+
+        }
+    };
+
+
     var audio = $("#sound");
 
     // Animate and vibrate button
     simon.animate = function(divid) {
 
-
         // Increase round speed.
         if (settings.round > 5) {
             settings.speed = 500
         }
-        <!-- a: c5.wav   b: g4.wav   c: e4.wav   d: c4.wav -->
+
+        // Light animation and sound
         if (divid === "a") {
             $("#a").css("border-color", "#1aff00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334537_4959932-lq.mp3");
             app.sendMessage(" t " + "t " + settings.intensity + " " + settings.duration + "\r");
+            // Turn off
             setTimeout(function() {
                 $("#a").css("border-color", "#0b7000");
             }, 200);
@@ -360,6 +325,7 @@ $(document).ready(function() {
             $("#b").css("border-color", "#ff0b00");
             $("#tune").attr("src", "http://freesound.org/data/previews/334/334540_4959932-lq.mp3");
             app.sendMessage(" t " + "r " + settings.intensity + " " + settings.duration + "\r");
+            // Turn off
             setTimeout(function() {
                 $("#b").css("border-color", "#c30800");
             }, 200);
@@ -367,6 +333,7 @@ $(document).ready(function() {
             $("#c").css("border-color", "#ffec00");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334542_4959932-lq.mp3");
             app.sendMessage(" t " + "l " + settings.intensity + " " + settings.duration + "\r");
+            // Turn off
             setTimeout(function() {
                 $("#c").css("border-color", "#c3b400");
             }, 200);
@@ -374,6 +341,7 @@ $(document).ready(function() {
             $("#d").css("border-color", "#29abd0");
             $("#tune").attr("src", "https://freesound.org/data/previews/334/334538_4959932-lq.mp3");
             app.sendMessage(" t " + "h " + settings.intensity + " " + settings.duration + "\r");
+            // Turn off
             setTimeout(function() {
                 $("#d").css("border-color", "#196d85");
             }, 200);
@@ -385,12 +353,10 @@ $(document).ready(function() {
 
     };
 
-
-
     // Generate Simon sequence
-    function makeid() {
+    function createSequence() {
 
-        if (settings.mode === 0)  {
+        if (settings.mode === 0)  {    // Singleplayer
             var text = "";
             var possible = "abcd";
 
@@ -399,65 +365,60 @@ $(document).ready(function() {
             }
             settings.sequence = text.split('');
         }
-        else { chat.makeid(); } // Server-generated sequence
+        else { chat.createSequence(); } // Multiplayer: Server-generated sequence
 
         console.log('New sequence: ' + settings.sequence);
 
     }
 
-    function playit() {
+    function playSequence() {
 
         // Animate Sequence
         function myLoop() {
             setTimeout(function() {
-                // Vibrate left shoe
-                /*if (settings.mode > 0) {
-                    app.leftShoe = true;
-                    app.rightShoe = true;
-                }*/
+
                 simon.animate(settings.sequence[settings.playNumber]);
                 settings.playNumber++;
 
                 if (settings.playNumber < settings.round) {
                     myLoop();
+
+                // End of sequence
                 } else {
                     settings.playNumber = 0;
-                    simon.yourTurn = true;
-                    simon.turn = "Your turn";
-                    $("#turn").html(simon.turn);
-
-                    //listen();
+                    setTimeout(function () {
+                        simon.yourTurn = true;
+                        simon.turn = "Your turn";
+                        $("#turn").html(simon.turn);
+                    }, 400);
                 }
             }, settings.speed)
         }
-
         myLoop();
-
     }
 
-
-    // LISTEN
-
-    simon.listen = function() {
+    // PRESSED
+    simon.pressed = function() {
 
         settings.clicked++;
         settings.clickedP1++;
         settings.clickedP2++;
 
-        // FAIL PRESS
+        // START AGAIN
         if ($("#fail").is(':visible')) {
             if (settings.mode > 0) {
-                chat.startFail();
+                chat.startAgain();    // Multiplayer
             } else {
-                simon.startFail();
+                simon.startAgain();    // Singleplayer
             }
         }
-        // START PRESS
+        // NEXT ROUND
         else if ($("#start").is(':visible')) {
+            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
             if (settings.mode > 0) {
-                chat.startNew();
+                chat.nextRound();    // Multiplayer
             } else {
-                simon.startNew();
+                simon.nextRound();    // Singleplayer
             }
         }
         // CORRECT
@@ -468,14 +429,14 @@ $(document).ready(function() {
             if (settings.clicked === settings.round) {
                 settings.clicked = 0;
                 if (settings.mode > 0) {
-                    chat.startNew();
+                    chat.nextRound();    // Multiplayer
                 } else {
-                    simon.startNew();
+                    simon.nextRound();    // Singleplayer
                 }
             }
 
         }
-
+        // CORRECT
         else if (settings.mode === 1 && app.leftShoe && simon.simonId === settings.sequence[settings.clickedP1-1]) {
             console.log("Right!");
 
@@ -484,16 +445,16 @@ $(document).ready(function() {
                 settings.clickedP1 = 0;
 
                 if (settings.mode > 0){
-                    chat.passShoe(1, true)
+                    chat.finished(1, true);    // Multiplayer
                 } else {
-                    simon.finishedP1 = true;
+                    simon.finishedP1 = true;    // Singleplayer
                 }
 
                 if (simon.finishedP2) {
                     if (settings.mode > 0) {
-                        chat.startNew();
+                        chat.nextRound();    // Multiplayer
                     } else {
-                        simon.startNew();
+                        simon.nextRound();    // Singleplayer
                     }
                 }
                 else {
@@ -502,6 +463,7 @@ $(document).ready(function() {
                 }
             }
         }
+        // CORRECT
         else if (settings.mode === 1 && app.rightShoe && simon.simonId === settings.sequence[settings.clickedP2-1]) {
             console.log("Right!");
 
@@ -510,16 +472,16 @@ $(document).ready(function() {
                 settings.clickedP2 = 0;
 
                 if (settings.mode > 0){
-                    chat.passShoe(2, true)
+                    chat.finished(2, true);    // Multiplayer
                 } else {
-                    simon.finishedP2 = true;
+                    simon.finishedP2 = true;    // Singleplayer
                 }
 
                 if (simon.finishedP1) {
                     if (settings.mode > 0) {
-                        chat.startNew();
+                        chat.nextRound();    // Multiplayer
                     } else {
-                        simon.startNew();
+                        simon.nextRound();    // Singleplayer
                     }
                 }
                 else {
@@ -527,43 +489,45 @@ $(document).ready(function() {
                     $("#turn").html(simon.turn);
                 }
             }
-
         // WRONG
         } else if ((app.leftShoe && !simon.finishedP1) || (app.rightShoe && !simon.finishedP2)) {
             console.log("WRONG");
             if (settings.mode > 0) {
                 if (app.rightShoe) {
-                    chat.fail(2);
+                    chat.fail(2);    // Multiplayer
                 }
                 else if (app.leftShoe) {
-                    chat.fail(1);
+                    chat.fail(1);    // Multiplayer
                 }
 
             } else {
-                simon.fail();
+                simon.fail();    // Singleplayer
             }
         }
 
     };
-
+    // START INTERFACE
     $("#start").on("click", function() {
+        // Start Effect
+        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+
         if (settings.mode > 0) {
-            chat.startNew();
+            chat.nextRound();    // Multiplayer
         } else {
-            simon.startNew();
+            simon.nextRound();    // Singleplayer
         }
     });
-
+    // FAIL INTERFACE
     $("#fail").on("click", function() {
         if (settings.mode > 0) {
-            chat.startFail();
+            chat.startAgain();    // Multiplayer
         } else {
-            simon.startFail();
+            simon.startAgain();    // Singleplayer
         }
     });
 
-    // NEW ROUND
-    simon.startNew = function() {
+    // NEXT ROUND
+    simon.nextRound = function() {
         simon.finishedP1 = false;
         simon.finishedP2 = false;
         simon.yourTurn = false;
@@ -578,13 +542,13 @@ $(document).ready(function() {
             settings.clickedP2 = 0;
 
             if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
-                chat.makeid();
+                chat.createSequence();     // Multiplayer
             } else if (settings.mode === 0) {
-                makeid();
+                createSequence();    // Singleplayer
             }
         }
         settings.round++;
-        playit();
+        playSequence();
         setTimeout(function(){
             $("#count").html(settings.round);
         },600);
@@ -593,14 +557,10 @@ $(document).ready(function() {
     // FAIL
     simon.fail = function() {
         $("#fail").show();
-        app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "r " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "l " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "t " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "h " + settings.intensity + " " + settings.durationFail + "\r");
+        // Fail Effect
+        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
+        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
+
         $("#fail").addClass("bigEntrance");
         $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
         audio[0].pause();
@@ -615,9 +575,17 @@ $(document).ready(function() {
             $("#turn").html(simon.turn);
         }
         settings.sequence = [];
+        startTimeF = new Date();
     };
 
-    simon.startFail = function() {
+    simon.startAgain = function() {
+        endTimeF = new Date();
+        if ((endTimeF-startTimeF) < settings.delayFail) {
+            return;
+        }
+        // Start Again Effect
+        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+
         simon.yourTurn = false;
         simon.turn = "Simon's turn";
         $("#turn").html(simon.turn);
@@ -630,9 +598,9 @@ $(document).ready(function() {
         settings.clickedP1 = 0;
         settings.clickedP2 = 0;
         if (settings.mode > 0 && app.leftShoe) { // Only one shoe sends message
-            chat.startNew();
+            chat.nextRound();    // Multiplayer
         } else if (settings.mode === 0) {
-            simon.startNew();
+            simon.nextRound();    // Singleplayer
         }
     };
 
