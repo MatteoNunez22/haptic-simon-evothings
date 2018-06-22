@@ -2,8 +2,10 @@ var chat = {};
 
 chat.connect = function() {
 
-    // Make connection
-    var socket = io.connect('http://142.157.37.246:4000');
+    console.log('chat.connect');
+
+    // Make connection                                     // McGill IP
+    var socket = io.connect('http://192.168.2.13:4000'); //142.157.37.246:4000
 
     // Query DOM
     var btn = document.getElementById('send'),
@@ -23,19 +25,27 @@ chat.connect = function() {
     };
 
     chat.fail = function (loser) {
-        socket.emit('fail', loser)    // Loser: 1 or 2
+        socket.emit('fail', loser);    // Loser: 1 or 2
     };
 
     chat.nextRound = function () {
-        socket.emit('nextRound', {})
+        socket.emit('nextRound', {});
     };
 
     chat.startAgain = function () {
-        socket.emit('startAgain', {})
+        socket.emit('startAgain', {});
+    };
+
+    chat.yourTurn = function (player) {
+        socket.emit('yourTurn', player);
+    };
+
+    chat.addition = function (letter) {
+        socket.emit('addition', letter);
     };
 
     // Listen for events
-    socket.on('generate', function(text) {
+    socket.on('generate', function (text) {
         settings.sequence = text.split('');
 
         letter = text;
@@ -81,4 +91,32 @@ chat.connect = function() {
         simon.startAgain(); // Only one shoe sends message
     });
 
+    socket.on('yourTurn', function(player) {
+        if (player === 1) {
+            if (app.leftShoe) {
+                simon.yourTurn = true;
+                simon.turn = "Your turn";
+                $("#turn").html(simon.turn);
+            } else {
+                simon.yourTurn = false;
+                simon.turn = "Wait for player 2";
+                $("#turn").html(simon.turn);
+            }
+        } else {
+            if (app.leftShoe) {
+                simon.yourTurn = false;
+                simon.turn = "Wait for player 1";
+                $("#turn").html(simon.turn);
+            } else {
+                simon.yourTurn = true;
+                simon.turn = "Your turn";
+                $("#turn").html(simon.turn);
+            }
+        }
+    });
+
+    socket.on('addition', function (letter) {
+        settings.sequence.push(letter);
+        console.log("Settings.sequence: " + settings.sequence);
+    });
 };

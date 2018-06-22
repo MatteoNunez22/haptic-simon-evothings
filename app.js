@@ -982,16 +982,16 @@ app.receivedMessageRight = function(data) {
 
 		var path = "sensors/" + time.slice(0, 10).replace(/-/g,"") + "-" + userID;
 
-		if (app.connectionFaking) {
+		/*if (app.connectionFaking) {
 			message = data;
 			if (app.debugLog) {
 				debugMsg['m'] = data;
 			}
-		} else {
+		} else {*/
 			// Convert data to String
 			var dataArray = new Uint8Array(data);
 			message = String.fromCharCode.apply(null, dataArray);
-		}
+		//}
 		if (app.debugLog) {
 			debugMsg['m'] = message;
 			if (app.debugLog) {
@@ -1150,16 +1150,16 @@ app.receivedMessageLeft = function(data) {
 
 		var path = "sensors/" + time.slice(0, 10).replace(/-/g,"") + "-" + userID;
 
-		if (app.connectionFaking) {
+		/*if (app.connectionFaking) {
 			message = data;
 			if (app.debugLog) {
 				debugMsg['m'] = data;
 			}
-		} else {
+		} else {*/
 			// Convert data to String
 			var dataArray = new Uint8Array(data);
 			message = String.fromCharCode.apply(null, dataArray);
-		}
+		//}
 		if (app.debugLog) {
 			debugMsg['m'] = message;
 			if (app.debugLog) {
