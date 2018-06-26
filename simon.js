@@ -378,6 +378,8 @@ $(document).ready(function() {
     }
 
     function playSequence() {
+        simon.turn = "Simon's turn";
+        $("#turn").html(simon.turn);
 
         // Animate Sequence
         function myLoop() {
@@ -398,9 +400,22 @@ $(document).ready(function() {
                             simon.turn = "Your turn";
                             $("#turn").html(simon.turn);
                         }, 400);
+                    } else {
+                        if (simon.yourTurn) {
+                            simon.turn = "Your turn";
+                            $("#turn").html(simon.turn);
+                        } else {
+                            if (app.leftShoe) {
+                                simon.turn = "Wait for player 2";
+                                $("#turn").html(simon.turn);
+                            } else {
+                                simon.turn = "Wait for player 1";
+                                $("#turn").html(simon.turn);
+                            }
+                        }
                     }
                 }
-            }, settings.speed)
+            }, settings.speed);
         }
         myLoop();
     }
@@ -557,8 +572,6 @@ $(document).ready(function() {
         $("#a").on("click", function () {
             endTimeT1 = new Date();
             if ((endTimeT1 - startTimeT1) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "a";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
@@ -571,8 +584,6 @@ $(document).ready(function() {
         $("#b").on("click", function () {
             endTimeR1 = new Date();
             if ((endTimeR1 - startTimeR1) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "b";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
@@ -585,8 +596,6 @@ $(document).ready(function() {
         $("#c").on("click", function () {
             endTimeL1 = new Date();
             if ((endTimeL1 - startTimeL1) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "c";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
@@ -599,8 +608,6 @@ $(document).ready(function() {
         $("#d").on("click", function () {
             endTimeH1 = new Date();
             if ((endTimeH1 - startTimeH1) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "d";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
@@ -614,8 +621,6 @@ $(document).ready(function() {
         $("#a").on("click", function () {
             endTimeT2 = new Date();
             if ((endTimeT2 - startTimeT2) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "a";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
@@ -628,8 +633,6 @@ $(document).ready(function() {
         $("#b").on("click", function () {
             endTimeR2 = new Date();
             if ((endTimeR2 - startTimeR2) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "b";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
@@ -642,8 +645,6 @@ $(document).ready(function() {
         $("#c").on("click", function () {
             endTimeL2 = new Date();
             if ((endTimeL2 - startTimeL2) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "c";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
@@ -656,8 +657,6 @@ $(document).ready(function() {
         $("#d").on("click", function () {
             endTimeH2 = new Date();
             if ((endTimeH2 - startTimeH2) >= settings.delay) {
-                //app.rightShoe = true;
-                //app.leftShoe = false;
                 simon.simonId = "d";
 
                 if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {

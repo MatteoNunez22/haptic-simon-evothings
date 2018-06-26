@@ -2608,8 +2608,3 @@ app.userCommand = function() {
     app.sendMessage(" " + command.trim() + "\r");
     //app.sendMessage(" p " + 1 + "t" + "\r");
 }
-
-app.openChat = function () {
-    $('#multiplayerInterface').hide();
-    $('#chat').show();
-};
