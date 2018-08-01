@@ -5,11 +5,11 @@ chat.connect = function() {
     console.log('chat.connect');
 
     // Make connection                                     // McGill IP
-    var socket = io.connect('http://142.157.37.246:4000'); //142.157.37.246:4000
+    var socket = io.connect('http://142.157.36.211:4000'); // 142.157.37.246:4000
                                                            // Local IP
-    // Query DOM                                           //192.168.2.13:4000
+    /*/ Query DOM                                           // 192.168.2.13:4000
     var btn = document.getElementById('send'),
-        letter = document.getElementById('letter');
+        letter = document.getElementById('letter');*/
 
     // Emit events
     chat.createSequence = function () {

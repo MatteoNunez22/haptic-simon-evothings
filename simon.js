@@ -15,8 +15,8 @@ var settings = {
     delayFail: 1500,
     intensity: 255,
     duration: 500,
-    durationStart: 300,
-    durationFail: 500,
+    durationStart: 200,
+    durationFail: 1500,
     clicked: 0,
     clickedP1: 0,
     clickedP2: 0,
@@ -124,11 +124,11 @@ $(document).ready(function() {
             winnerVal = toe;
         }
         // Left
-        if (winner === 1 && winnerVal < 980){ //980
+        if (winner === 1 && winnerVal < 970){ //980
             return;
         }
         // Right
-        if (winner === 2 && winnerVal < 980){ //980
+        if (winner === 2 && winnerVal < 970){ //980
             return;
         }
         // Heel
@@ -136,10 +136,10 @@ $(document).ready(function() {
             return;
         }
         // Toe
-        if (winner === 4 && winnerVal < 980){ //980
+        if (winner === 4 && winnerVal < 970){ //980
             return;
         }
-
+        // RIGHT
         switch(winner) {
             case 1:
                 endTimeL2 = new Date();
@@ -148,9 +148,6 @@ $(document).ready(function() {
                     app.leftShoe = false;
                     simon.simonId = "c";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                        simon.animate("c");
-                    }
                     simon.pressed();
                     startTimeL2 = new Date();
                 }
@@ -162,23 +159,17 @@ $(document).ready(function() {
                     app.leftShoe = false;
                     simon.simonId = "b";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                        simon.animate("b");
-                    }
                     simon.pressed();
                     startTimeR2 = new Date();
                 }
                 break;
             case 3:
-                endTimeH1 = new Date();
+                endTimeH2 = new Date();
                 if ((endTimeH2-startTimeH2) >= settings.delay) {
                     app.rightShoe = true;
                     app.leftShoe = false;
                     simon.simonId = "d";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                        simon.animate("d");
-                    }
                     simon.pressed();
                     startTimeH2 = new Date();
                 }
@@ -190,9 +181,6 @@ $(document).ready(function() {
                     app.leftShoe = false;
                     simon.simonId = "a";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                        simon.animate("a");
-                    }
                     simon.pressed();
                     startTimeT2 = new Date();
                 }
@@ -236,7 +224,7 @@ $(document).ready(function() {
             return;
         }
         // Heel
-        if (winner === 3 && winnerVal < 1000){ //1200
+        if (winner === 3 && winnerVal < 900){ //1200
             return;
         }
         // Toe
@@ -251,9 +239,6 @@ $(document).ready(function() {
                     app.leftShoe = true;
                     simon.simonId = "c";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                        simon.animate("c");
-                    }
                     simon.pressed();
                     startTimeL1 = new Date();
                 }
@@ -265,9 +250,6 @@ $(document).ready(function() {
                     app.leftShoe = true;
                     simon.simonId = "b";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                        simon.animate("b");
-                    }
                     simon.pressed();
                     startTimeR1 = new Date();
                 }
@@ -279,9 +261,6 @@ $(document).ready(function() {
                     app.leftShoe = true;
                     simon.simonId = "d";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                        simon.animate("d");
-                    }
                     simon.pressed();
                     startTimeH1 = new Date();
                 }
@@ -293,9 +272,6 @@ $(document).ready(function() {
                     app.leftShoe = true;
                     simon.simonId = "a";
 
-                    if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                        simon.animate("a");
-                    }
                     simon.pressed();
                     startTimeT1 = new Date();
                 }
@@ -422,7 +398,6 @@ $(document).ready(function() {
 
     // PRESSED
     simon.pressed = function() {
-        console.log('Pressed');
         settings.clicked++;
         settings.clickedP1++;
         settings.clickedP2++;
@@ -447,6 +422,7 @@ $(document).ready(function() {
         // CORRECT
         else if (settings.mode === 0 && simon.simonId === settings.sequence[settings.clicked-1]) {
             console.log("Right!");
+            simon.animate(simon.simonId);
 
             // End of repeated sequence
             if (settings.clicked === settings.round) {
@@ -462,6 +438,7 @@ $(document).ready(function() {
         // CORRECT: MODE 1
         else if (settings.mode === 1 && app.leftShoe && simon.simonId === settings.sequence[settings.clickedP1-1]) {
             console.log("Right!");
+            simon.animate(simon.simonId);
 
             // End of repeated sequence
             if (settings.clickedP1 === settings.round) {
@@ -489,6 +466,7 @@ $(document).ready(function() {
         // CORRECT: MODE 1
         else if (settings.mode === 1 && app.rightShoe && simon.simonId === settings.sequence[settings.clickedP2-1]) {
             console.log("Right!");
+            simon.animate(simon.simonId);
 
             // End of repeated sequence
             if (settings.clickedP2 === settings.round) {
@@ -516,6 +494,7 @@ $(document).ready(function() {
         // ADDITION: MODE 2
         } else if (settings.mode === 2 && simon.yourTurn && settings.sequence.length < settings.clicked) {
             console.log("Addition!");
+            simon.animate(simon.simonId);
             settings.clicked = 0;
             chat.addition(simon.simonId);
 
@@ -530,6 +509,7 @@ $(document).ready(function() {
         // CORRECT: MODE 2
         } else if (settings.mode === 2 && simon.yourTurn && simon.simonId === settings.sequence[settings.clicked-1]) {
             console.log("Right!");
+            simon.animate(simon.simonId);
 
         // WRONG
         } else if ((app.leftShoe && !simon.finishedP1) || (app.rightShoe && !simon.finishedP2)) {
@@ -574,9 +554,6 @@ $(document).ready(function() {
             if ((endTimeT1 - startTimeT1) >= settings.delay) {
                 simon.simonId = "a";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("a");
-                }
                 simon.pressed();
                 startTimeT1 = new Date();
             }
@@ -586,9 +563,6 @@ $(document).ready(function() {
             if ((endTimeR1 - startTimeR1) >= settings.delay) {
                 simon.simonId = "b";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("b");
-                }
                 simon.pressed();
                 startTimeR1 = new Date();
             }
@@ -598,9 +572,6 @@ $(document).ready(function() {
             if ((endTimeL1 - startTimeL1) >= settings.delay) {
                 simon.simonId = "c";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("c");
-                }
                 simon.pressed();
                 startTimeL1 = new Date();
             }
@@ -610,9 +581,6 @@ $(document).ready(function() {
             if ((endTimeH1 - startTimeH1) >= settings.delay) {
                 simon.simonId = "d";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP1) {
-                    simon.animate("d");
-                }
                 simon.pressed();
                 startTimeH1 = new Date();
             }
@@ -623,9 +591,6 @@ $(document).ready(function() {
             if ((endTimeT2 - startTimeT2) >= settings.delay) {
                 simon.simonId = "a";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("a");
-                }
                 simon.pressed();
                 startTimeT2 = new Date();
             }
@@ -635,9 +600,6 @@ $(document).ready(function() {
             if ((endTimeR2 - startTimeR2) >= settings.delay) {
                 simon.simonId = "b";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("b");
-                }
                 simon.pressed();
                 startTimeR2 = new Date();
             }
@@ -647,9 +609,6 @@ $(document).ready(function() {
             if ((endTimeL2 - startTimeL2) >= settings.delay) {
                 simon.simonId = "c";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("c");
-                }
                 simon.pressed();
                 startTimeL2 = new Date();
             }
@@ -659,9 +618,6 @@ $(document).ready(function() {
             if ((endTimeH2 - startTimeH2) >= settings.delay) {
                 simon.simonId = "d";
 
-                if ($("#fail").is(':hidden') && $("#start").is(':hidden') && !simon.finishedP2) {
-                    simon.animate("d");
-                }
                 simon.pressed();
                 startTimeH2 = new Date();
             }
@@ -715,9 +671,23 @@ $(document).ready(function() {
     // FAIL
     simon.fail = function() {
         $("#fail").show();
-        // Fail Effect
+
+        // Fail Effect ("Wrong Buzz")
         app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
-        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
+
+        /*
+        // Success Effect ("Pass code")
+        app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");
+
+        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");}, 400);
+        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");}, 600);
+        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 200 + "\r");}, 800);
+
+        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");}, 1300);
+
+        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");}, 2000);
+        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");}, 2400);
+        */
 
         $("#fail").addClass("bigEntrance");
         $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
@@ -741,8 +711,12 @@ $(document).ready(function() {
         if ((endTimeF-startTimeF) < settings.delayFail) {
             return;
         }
-        // Start Again Effect
+        // Start Again Effect ("Knock Knock")
         app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+        }, settings.durationStart);
+
 
         simon.yourTurn = false;
         simon.turn = "Simon's turn";
