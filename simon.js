@@ -54,7 +54,11 @@ simon.hapticSimonStart = function() {
     $('#selectorView').hide();
     $('#shoeButtons').hide();
     $('.experimentButton').hide();
+    $('#hapticSimon').hide();
+    $('#multiplayerInterface').hide();
+    $('#experimentInterface').hide();
     $('#hapticSimonView').show();
+    $('#simonInterface').show();
     $('#singleplayer').show();
     $('#multiplayer').show();
 };
@@ -96,6 +100,11 @@ simon.multiPlayer2 = function() {
         simon.turn = "Wait for player 1";
         $("#turn").html(simon.turn);
     }
+};
+
+simon.experiment = function () {
+    $('#simonInterface').hide();
+    $('#experimentInterface').show();
 };
 
 $(document).ready(function() {
@@ -675,20 +684,6 @@ $(document).ready(function() {
         // Fail Effect ("Wrong Buzz")
         app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
 
-        /*
-        // Success Effect ("Pass code")
-        app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");
-
-        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");}, 400);
-        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");}, 600);
-        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 200 + "\r");}, 800);
-
-        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");}, 1300);
-
-        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");}, 2000);
-        setTimeout(function(){app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");}, 2400);
-        */
-
         $("#fail").addClass("bigEntrance");
         $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
         audio[0].pause();
@@ -717,7 +712,6 @@ $(document).ready(function() {
             app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
         }, settings.durationStart);
 
-
         simon.yourTurn = false;
         simon.turn = "Simon's turn";
         $("#turn").html(simon.turn);
@@ -734,6 +728,124 @@ $(document).ready(function() {
         } else if (settings.mode === 0) {
             simon.nextRound();    // Singleplayer
         }
+    };
+
+    // Experiment Effects
+
+    simon.failEffect = function () {
+        // Fail Effect ("Wrong Buzz")
+        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
+    };
+
+    simon.successEffect = function () {
+        // Success Effect ("Pass code")
+        app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");
+
+        setTimeout(function(){
+            app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");
+            }, 300);
+        setTimeout(function(){
+            app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");
+            }, 500);
+        setTimeout(function(){
+            app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");
+            }, 700);
+
+        setTimeout(function(){
+            app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");
+            }, 1000);
+        /*
+        setTimeout(function(){
+            app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");
+            }, 2000);
+        setTimeout(function(){
+            app.sendMessage(" t " + "test " + settings.intensity + " " + 300 + "\r");
+            }, 2400);   */
+    };
+
+    simon.newGameEffect = function () {
+        // Start Again Effect ("Knock Knock")
+        app.sendMessage(" t " + "test " + settings.intensity + " " + 100 + "\r");
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + settings.intensity + " " + 100 + "\r");
+        }, 100);
+    };
+
+    simon.fourthEffect = function () {
+        // Effect 4 ("Knock Knock Knock")
+        app.sendMessage(" t " + "test " + 165 + " " + 500 + "\r");
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + 205 + " " + 500 + "\r");
+        }, 450);
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + 255 + " " + 500 + "\r");
+        }, 900);
+    };
+
+    simon.fifthEffect = function () {
+        // Effect 5 ("Counter Clockwise x2")
+        app.sendMessage(" t " + "t " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "r " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "h " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "t " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "r " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "h " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "t " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "r " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "h " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "t " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "r " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "h " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");
+    };
+
+    simon.sixthEffect = function () {
+        // Effect 6
+        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + 180 + " " + settings.durationStart + "\r");
+        }, settings.durationStart);
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+        }, settings.durationStart*2);
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + 180 + " " + settings.durationStart + "\r");
+        }, settings.durationStart*3);
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+        }, settings.durationStart*4);
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + 180 + " " + settings.durationStart + "\r");
+        }, settings.durationStart*5);
+        setTimeout(function () {
+            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+        }, settings.durationStart*6);
+    };
+
+    simon.seventhEffect = function () {
+        // Effect 7
+        app.sendMessage(" t " + "st " + 100 + " " + settings.duration + "\r");
+        setTimeout(function() {
+            app.sendMessage(" t " + "sl " + 100 + " " + settings.duration + "\r");
+            app.sendMessage(" t " + "sr " + 100 + " " + settings.duration + "\r");
+        }, 10);
+        setTimeout(function() {
+            app.sendMessage(" t " + "sh " + 100 + " " + settings.duration + "\r");
+        }, 30);
+
+        setTimeout(function() {
+            app.sendMessage(" t " + "st " + 100 + " " + settings.duration + "\r");
+        }, 40);
+        setTimeout(function() {
+            app.sendMessage(" t " + "sl " + 100 + " " + settings.duration + "\r");
+            app.sendMessage(" t " + "sr " + 100 + " " + settings.duration + "\r");
+        }, 50);
+        setTimeout(function() {
+            app.sendMessage(" t " + "sh " + 100 + " " + settings.duration + "\r");
+        }, 60);
     };
 
 }); //document ready
