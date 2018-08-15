@@ -12,11 +12,11 @@ var settings = {
     playNumber: 0,
     speed: 1000,
     delay: 700,
-    delayFail: 1500,
+    delayFail: 2000,
     intensity: 255,
     duration: 500,
     durationStart: 200,
-    durationFail: 1500,
+    durationFail: 2000,
     clicked: 0,
     clickedP1: 0,
     clickedP2: 0,
@@ -384,7 +384,7 @@ $(document).ready(function() {
                             simon.yourTurn = true;
                             simon.turn = "Your turn";
                             $("#turn").html(simon.turn);
-                        }, 400);
+                        }, 1000); //400
                     } else {
                         if (simon.yourTurn) {
                             simon.turn = "Your turn";
@@ -421,7 +421,7 @@ $(document).ready(function() {
         }
         // NEXT ROUND
         else if ($("#start").is(':visible')) {
-            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+            simon.newGameEffect();
             if (settings.mode > 0) {
                 chat.nextRound();    // Multiplayer
             } else {
@@ -435,14 +435,16 @@ $(document).ready(function() {
 
             // End of repeated sequence
             if (settings.clicked === settings.round) {
+                simon.yourTurn = false;
                 settings.clicked = 0;
-                if (settings.mode > 0) {
-                    chat.nextRound();    // Multiplayer
-                } else {
-                    simon.nextRound();    // Singleplayer
-                }
-            }
+                setTimeout(function () {
+                    simon.successEffect();
+                }, 1000);
 
+                setTimeout(function () {
+                    simon.nextRound();
+                }, 3000);
+            }
         }
         // CORRECT: MODE 1
         else if (settings.mode === 1 && app.leftShoe && simon.simonId === settings.sequence[settings.clickedP1-1]) {
@@ -463,7 +465,7 @@ $(document).ready(function() {
                     if (settings.mode > 0) {
                         chat.nextRound();    // Multiplayer
                     } else {
-                        simon.nextRound();    // Singleplayer // ERASE this shit
+                        simon.nextRound();    // Singleplayer // ERASE this
                     }
                 }
                 else { // ADD simon.yourTurn = false;
@@ -682,7 +684,7 @@ $(document).ready(function() {
         $("#fail").show();
 
         // Fail Effect ("Wrong Buzz")
-        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
+        simon.failEffect();
 
         $("#fail").addClass("bigEntrance");
         $("#tune").attr("src", "http://freesound.org/data/previews/415/415764_6090639-lq.mp3");
@@ -707,10 +709,7 @@ $(document).ready(function() {
             return;
         }
         // Start Again Effect ("Knock Knock")
-        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
-        setTimeout(function () {
-            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
-        }, settings.durationStart);
+        simon.newGameEffect();
 
         simon.yourTurn = false;
         simon.turn = "Simon's turn";
@@ -737,7 +736,7 @@ $(document).ready(function() {
         app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationFail + "\r");
     };
 
-    simon.successEffect = function () {
+    simon.passCode = function () {
         // Success Effect ("Pass code")
         app.sendMessage(" t " + "test " + settings.intensity + " " + 150 + "\r");
 
@@ -765,10 +764,10 @@ $(document).ready(function() {
 
     simon.newGameEffect = function () {
         // Start Again Effect ("Knock Knock")
-        app.sendMessage(" t " + "test " + settings.intensity + " " + 100 + "\r");
+        app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
         setTimeout(function () {
-            app.sendMessage(" t " + "test " + settings.intensity + " " + 100 + "\r");
-        }, 100);
+            app.sendMessage(" t " + "test " + settings.intensity + " " + settings.durationStart + "\r");
+        }, settings.durationStart);
     };
 
     simon.fourthEffect = function () {
@@ -782,7 +781,7 @@ $(document).ready(function() {
         }, 900);
     };
 
-    simon.fifthEffect = function () {
+    simon.successEffect = function () {
         // Effect 5 ("Counter Clockwise x2")
         app.sendMessage(" t " + "t " + settings.intensity + " " + 200 + "\r");
         app.sendMessage(" t " + "r " + settings.intensity + " " + 200 + "\r");
