@@ -137,15 +137,15 @@ $(document).ready(function() {
             return;
         }
         // Right
-        if (winner === 2 && winnerVal < 970){ //980
+        if (winner === 2 && winnerVal < 965){ //980
             return;
         }
         // Heel
-        if (winner === 3 && winnerVal < 975){ //975
+        if (winner === 3 && winnerVal < 965){ //975
             return;
         }
         // Toe
-        if (winner === 4 && winnerVal < 970){ //980
+        if (winner === 4 && winnerVal < 960){ //980
             return;
         }
         // RIGHT
@@ -225,19 +225,19 @@ $(document).ready(function() {
             winnerVal = toe;
         }
         // Left
-        if (winner === 1 && winnerVal < 920){
+        if (winner === 1 && winnerVal < 880){ //920
             return;
         }
         // Right
-        if (winner === 2 && winnerVal < 1005){ //1205
+        if (winner === 2 && winnerVal < 995){ //1005
             return;
         }
         // Heel
-        if (winner === 3 && winnerVal < 900){ //1200
+        if (winner === 3 && winnerVal < 870){ //900
             return;
         }
         // Toe
-        if (winner === 4 && winnerVal < 910){
+        if (winner === 4 && winnerVal < 860){ //910
             return;
         }
         switch(winner) {
@@ -300,7 +300,9 @@ $(document).ready(function() {
 
         // Increase round speed.
         if (settings.round > 5) {
-            settings.speed = 500
+            settings.speed = 750;
+        } else if (settings.round > 10) {
+            settings.speed = 500;
         }
 
         // Light animation and sound
@@ -794,11 +796,11 @@ $(document).ready(function() {
         app.sendMessage(" t " + "t " + settings.intensity + " " + 200 + "\r");
         app.sendMessage(" t " + "r " + settings.intensity + " " + 200 + "\r");
         app.sendMessage(" t " + "h " + settings.intensity + " " + 200 + "\r");
-        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");/*
         app.sendMessage(" t " + "t " + settings.intensity + " " + 200 + "\r");
         app.sendMessage(" t " + "r " + settings.intensity + " " + 200 + "\r");
         app.sendMessage(" t " + "h " + settings.intensity + " " + 200 + "\r");
-        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");
+        app.sendMessage(" t " + "l " + settings.intensity + " " + 200 + "\r");*/
     };
 
     simon.sixthEffect = function () {
