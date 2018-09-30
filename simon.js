@@ -20,9 +20,9 @@ var settings = {
     clicked: 0,
     clickedP1: 0,
     clickedP2: 0,
-    mode: 0 // Singleplayer :   0
-            // Multiplayer 1:   1
-            // Multiplayer 2:   2
+    mode: 0 // Singleplayer :   0   Classic simon says game
+            // Multiplayer 1:   1   Two players play simon says each round at their own pace
+            // Multiplayer 2:   2   Each player add a new move at the end of the repeated sequence; played in turns
 };
 
 // Timing variables (Left)
@@ -132,27 +132,27 @@ $(document).ready(function() {
             winner = 4;
             winnerVal = toe;
         }
-        // Left
-        if (winner === 1 && winnerVal < 970){ //980
+        // Left                      // Sensitivity values
+        if (winner === 1 && winnerVal < 970){
             return;
         }
         // Right
-        if (winner === 2 && winnerVal < 965){ //980
+        if (winner === 2 && winnerVal < 965){
             return;
         }
         // Heel
-        if (winner === 3 && winnerVal < 965){ //975
+        if (winner === 3 && winnerVal < 965){
             return;
         }
         // Toe
-        if (winner === 4 && winnerVal < 960){ //980
+        if (winner === 4 && winnerVal < 960){
             return;
         }
         // RIGHT
         switch(winner) {
             case 1:
                 endTimeL2 = new Date();
-                if ((endTimeL2-startTimeL2) >= settings.delay) {
+                if ((endTimeL2-startTimeL2) >= settings.delay) {    // Delay to avoid repeated input
                     app.rightShoe = true;
                     app.leftShoe = false;
                     simon.simonId = "c";
@@ -224,20 +224,20 @@ $(document).ready(function() {
             winner = 4;
             winnerVal = toe;
         }
-        // Left
-        if (winner === 1 && winnerVal < 880){ //920
+        // Left                      // Sensitivity values
+        if (winner === 1 && winnerVal < 880){
             return;
         }
         // Right
-        if (winner === 2 && winnerVal < 990){ //1005
+        if (winner === 2 && winnerVal < 990){
             return;
         }
         // Heel
-        if (winner === 3 && winnerVal < 860){ //900
+        if (winner === 3 && winnerVal < 860){
             return;
         }
         // Toe
-        if (winner === 4 && winnerVal < 845){ //910
+        if (winner === 4 && winnerVal < 845){
             return;
         }
         switch(winner) {
@@ -293,7 +293,7 @@ $(document).ready(function() {
     };
 
 
-    var audio = $("#sound");
+    var audio = $("#sound");    // Optional audio for color sounds
 
     // Animate and vibrate button
     simon.animate = function(divid) {
@@ -387,7 +387,7 @@ $(document).ready(function() {
                             simon.turn = "Your turn";
                             $("#turn").html(simon.turn);
                         }, 1000); //400
-                    } else {
+                    } else {    // For multiplayer mode 2
                         if (simon.yourTurn) {
                             simon.turn = "Your turn";
                             $("#turn").html(simon.turn);
@@ -560,7 +560,7 @@ $(document).ready(function() {
         }
     });
 
-    // SHOE-LESS MOD
+    // SHOE-LESS MOD: for playing by tapping on the phone
     if (app.leftShoe) {
         $("#a").on("click", function () {
             endTimeT1 = new Date();
@@ -731,7 +731,7 @@ $(document).ready(function() {
         }
     };
 
-    // Experiment Effects
+    // Experiment: Vibrations Effects
 
     simon.failEffect = function () {
         // Fail Effect ("Wrong Buzz")
