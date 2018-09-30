@@ -229,15 +229,15 @@ $(document).ready(function() {
             return;
         }
         // Right
-        if (winner === 2 && winnerVal < 995){ //1005
+        if (winner === 2 && winnerVal < 990){ //1005
             return;
         }
         // Heel
-        if (winner === 3 && winnerVal < 870){ //900
+        if (winner === 3 && winnerVal < 860){ //900
             return;
         }
         // Toe
-        if (winner === 4 && winnerVal < 860){ //910
+        if (winner === 4 && winnerVal < 845){ //910
             return;
         }
         switch(winner) {
