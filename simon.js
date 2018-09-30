@@ -1,3 +1,14 @@
+/* Haptic version of the game "Simon Says" for the haptic shoes
+ *
+ *  The 4 vibrations are the 4 colors of the 'wheel'.
+ *  Listen to first sequence, then repeat the sequence by pressing on the sensors
+ *
+ *  The sequence gets progressively longer
+ *
+ *  Modes: 1 singleplayer and 2 multiplayer modes
+ *
+ */
+
 var simon = {
     simonId: "",
     yourTurn: false,
@@ -560,7 +571,7 @@ $(document).ready(function() {
         }
     });
 
-    // SHOE-LESS MOD: for playing by tapping on the phone
+    // SHOE-LESS MOD: for playing by tapping on the screen
     if (app.leftShoe) {
         $("#a").on("click", function () {
             endTimeT1 = new Date();
