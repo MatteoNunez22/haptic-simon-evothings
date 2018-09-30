@@ -1,14 +1,1 @@
-{
-  "uuid": "7aae3c34-ccd4-490f-9873-134dc337335c",
-  "plugins": [],
-  "libraries": [],
-  "name": "hapticshoe_controller",
-  "title": "SRL Haptic Shoe Controller",
-  "description": "App oneline description.",
-  "long-description": "App long description.",
-  "version": "",
-  "author-name": "Evothings",
-  "author-email": "build@evothings.com",
-  "author-url": "https://evothings.com",
-  "cordova-id": "com.evothings.samples.hapticshoe.controller"
-}
+{"uuid":"7aae3c34-ccd4-490f-9873-134dc337335c","plugins":[],"libraries":[],"name":"hapticshoe_controller","title":"SRL Haptic Shoe Controller","description":"App oneline description.","long-description":"App long description.","version":"","author-name":"Evothings","author-email":"build@evothings.com","author-url":"https://evothings.com","cordova-id":"com.evothings.samples.hapticshoe.controller","app-uuid":"d4caf4a3-2fc4-46fa-b27c-bc93cb797ba7"}
